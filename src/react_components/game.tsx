@@ -31,9 +31,9 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   const matrix: string[][] = [
     ["blank", "blank", "blank", "blank", "blank", "blank", "blank"],
     ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
-    ["player", "alien", "empty", "empty", "alien", "empty", "target"],
+    ["player", "empty", "stick", "empty", "alien", "empty", "target"],
     ["blank", "alien", "empty", "empty", "alien", "empty", "blank"],
-    ["blank", "empty", "empty", "empty", "alien", "empty", "blank"],
+    ["blank", "empty", "stick", "empty", "stick", "empty", "blank"],
     ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
     ["blank", "empty", "empty", "empty", "empty", "empty", "blank"]
   ];

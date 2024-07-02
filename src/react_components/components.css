@@ -307,9 +307,20 @@
     position: relative;
   }
   
-  .player-image, .chicken-image {
+  .player-image {
+    position: relative;
     top: 0;
     left: 0;
+    height: 60%;
+    z-index: 2;
+  }
+
+  .chicken-image {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 60%;
+    z-index: 1;
   }
   
   
@@ -331,5 +342,17 @@
   
   .cell.player {
     background-image: url('./assets/characters/spaceship.gif');
+  }
+  
+
+  .stick-cell {
+  }
+  
+  .stick-line {
+
+    width: 50%;
+    border-top: 6px solid white;
+    border-radius: 20%;
+    transform: rotate(40deg);
   }
   
