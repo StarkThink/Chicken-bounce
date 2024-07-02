@@ -344,15 +344,17 @@
     background-image: url('./assets/characters/spaceship.gif');
   }
   
-
-  .stick-cell {
-  }
-  
-  .stick-line {
-
+  .stick-e-line {
     width: 50%;
     border-top: 6px solid white;
     border-radius: 20%;
     transform: rotate(40deg);
+  }
+
+  .stick-w-line {
+    width: 50%;
+    border-top: 6px solid white;
+    border-radius: 20%;
+    transform: rotate(-40deg);
   }
   
