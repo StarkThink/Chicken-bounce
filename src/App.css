@@ -1,0 +1,264 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+  
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+}
+  
+.pixel-art-button {
+    font-family: 'Courier New', monospace;
+    font-size: 4rem;
+    padding: 1rem 10rem;
+    border: none;
+    background-color: #dd6767;
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures the font stays pixelated */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25); /* Adds a shadow */
+}
+  
+.pixel-art-button:hover {
+    background-color: #555;
+    transition: ease-in-out 0.3s;
+}
+  
+.image-container {
+    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('./background1.gif') no-repeat center center;
+    background-size: cover; /* Ensures the image covers the entire container */
+}
+
+.game-image-container {
+    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('./game-background.png') no-repeat center center;
+    background-size: cover; /* Ensures the image covers the entire container */
+}
+  
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area without distorting aspect ratio */
+}
+  
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+}
+  
+.title {
+    font-family: 'Courier New', monospace;
+    font-size: 4rem;
+    z-index: 10; /* Ensure title is above image and overlay */
+    color: #fff; /* White color for visibility */
+    text-align: center;
+    margin-bottom: 20px; /* Spacing between title and button */
+}
+
+.account-title {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.3rem;
+    z-index: 10; /* Ensure title is above image and overlay */
+    color: #fff; /* White color for visibility */
+    text-align: center;
+    margin-bottom: 20px; /* Spacing between title and button */
+}
+
+.account-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1rem;
+    z-index: 10; /* Ensure title is above image and overlay */
+    color: #fff; /* White color for visibility */
+    text-align: center;
+    margin-bottom: 20px; /* Spacing between title and button */
+}
+
+.account-container {
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.account-buttons button {
+    margin: 10px;
+}
+  
+.centered-button {
+    z-index: 10; /* Ensures the button is above the image and overlay */
+    margin-top: 100px; /* Extra spacing if needed */
+    align-items: center;
+    text-align: center;
+}
+  
+.space-background {
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-color: black; /* Base color for space */
+    position: relative;
+    overflow: hidden;
+}
+  
+.space-background::before {
+    content: '';
+    position: absolute;
+    width: 2px;  /* Small width for the pseudo element */
+    height: 2px;  /* Small height for the pseudo element */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 
+      1000px 200px white,
+      150px 850px white,
+      290px 340px white,
+      450px 780px white,
+      900px 100px white,
+      600px 1100px white,
+      1200px 300px white,
+      700px 400px white,
+      800px 650px white,
+      1000px 100px white,
+      1100px 500px white,
+      50px 700px white,
+      250px 900px white,
+      500px 300px white,
+      300px 1100px white,
+      400px 500px white,
+      1100px 300px white,
+      100px 800px white,
+      200px 1200px white,
+      1300px 600px white,
+      1400px 200px white,
+      1600px 900px white,
+      1700px 400px white,
+      1800px 800px white,
+      1900px 200px white; /* Random coordinates for stars */
+    animation: twinkle 5s infinite ease-in-out;
+}
+  
+@keyframes twinkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+  
+.score {
+    font-family: 'Courier New', monospace;
+    position: absolute;
+    top: 4;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: rgb(216, 249, 117);
+    background: rgba(0, 0, 0, 0.5); 
+    padding: 10px 0;
+}
+  
+.game-over {
+    font-family: 'Courier New', monospace;
+    font-size: 3rem;
+    position: absolute;
+    text-align: center;
+    color: red;
+    top: 50%;
+    width: 100%;
+}
+
+.account-player {
+    font-family: 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.account-player label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.account-player input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    text-align: center; /* Center the text horizontally */
+    line-height: 1.5em; /* Center the text vertically if necessary */
+}
+
+.account-player input[type="text"]:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
+.account-player input[type="text"]::placeholder {
+    color: #999;
+}
+
+.error-container {
+    height: 5px;
+}
+
+.player-name-error {
+    border: 1px solid red;
+    border-radius: 5px;
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2em;
+    color: #fff;
+    background: rgb(228, 14, 14);
+}
+
+.account-address {
+    font-family: 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.account-address label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.logo-img {
+    margin-bottom: 50px;
+}

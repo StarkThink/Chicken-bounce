@@ -1,0 +1,335 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+    --font-family: 'Courier New', monospace;
+}
+
+.round-title {
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 3rem;
+    z-index: 10;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    background: black;
+}
+
+.game-background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url('./background.png') repeat center center;
+}
+
+.game-content {
+	/* border: 1px solid red; */
+	width: 1000px;
+	height: 100vh;
+    display: flex;
+	align-items: center;
+	flex-direction: column;
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: yellow;
+    padding: 20px;
+    min-width: 90%;
+}
+
+.board-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	width: 900px;
+	margin-top: 50px;
+    background: rgba(0, 0, 0, 0.404);
+    padding: 10px;
+	/* border: 1px solid red; */
+}
+
+.board-header div p {
+	font-size: 21px;
+}
+
+
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+	/* border: 1px solid red; */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 40%;
+}
+
+.next-round-button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 90%;
+    border: none;
+    background-color: rgb(55, 163, 73);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures the font stays pixelated */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25); /* Adds a shadow */
+}
+
+.next-round-button:hover {
+	background-color: rgb(10, 96, 24);
+	transition: ease-in-out 0.3s;
+}
+
+.next-round-button:disabled {
+    background-color: rgb(143, 143, 143); /* Gray out the button */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+}
+
+.end-game-button {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 90%;
+    border: none;
+    background-color: rgb(216, 66, 20);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures the font stays pixelated */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25); /* Adds a shadow */
+}
+
+.end-game-button:hover {
+	background-color: #555;
+    transition: ease-in-out 0.3s;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+  
+.modal {
+    font-family: var(--font-family);
+    background: #e6ef33;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+  
+.modal-content {
+    margin-bottom: 20px;
+}
+  
+.close-button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.how-to-play {
+    text-decoration: underline;
+    cursor: pointer;
+    color: green;
+}
+
+.how-to-play:hover {
+    color: rgb(41, 186, 41);
+}
+
+.gif-cell {
+    background-color: #1d1d18;
+    position: relative;
+}
+
+.gif-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #1d1d18;
+}
+
+.cell-empty {
+    width: 100%;
+    height: 100%;
+    background-color: #2d8d15;
+}
+
+.spaceship-up {
+    transform: rotate(0deg);
+}
+  
+.spaceship-right {
+    transform: rotate(90deg);
+}
+  
+.spaceship-down {
+    transform: rotate(180deg);
+}
+  
+.spaceship-left {
+    transform: rotate(-90deg);
+}
+
+.collected-characters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 300px;
+}
+  
+.collected-gif {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+}
+
+.collected-characters{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    min-height: 40px;
+    font-size: 1rem;
+}
+
+.collected-characters-container {
+    padding: 20px;
+    background: black;
+    /* border: 1px solid red; */
+}
+
+.leaderboard-wrapper {
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0);
+    padding: 20px;
+}
+
+.leaderboard-scores{
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 2rem;
+    color: yellow;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-play-again-content{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.button-play-again{
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 20%;
+    width: 60%;
+    border: none;
+    background-color: rgb(51, 179, 72);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    image-rendering: pixelated;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.button-play-again:hover {
+	background-color: rgb(21, 126, 39);
+    transition: ease-in-out 0.3s;
+}
+
+.board-content{
+    width: 100%;
+    height: 90vh;
+}
+
+.board-container {
+    display: grid;
+    grid-template-columns: repeat(7, 13%); /* 7 columns, each 30 pixels wide */
+    grid-template-rows: repeat(7, 13%); /* 7 rows, each 30 pixels tall */
+    gap: 2px;
+    border: 2px solid #333;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .cell {
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.5rem;
+    position: relative; /* Ensure proper positioning for image overlay */
+    cursor: pointer; /* Add cursor pointer on hover */
+  }
+
+  .player-content {
+    position: relative;
+  }
+  
+  .player-image, .chicken-image {
+    top: 0;
+    left: 0;
+  }
+  
+  
+  .cell.empty {
+    background-color: green;
+  }
+  
+  .cell.blank {
+    background-color: rgba(0, 128, 0, 0.5);
+  }
+  
+  .cell.target {
+    background-color: red;
+  }
+  
+  .cell.alien {
+    background-image: url('./assets/characters/alien.gif');
+  }
+  
+  .cell.player {
+    background-image: url('./assets/characters/spaceship.gif');
+  }
+  
