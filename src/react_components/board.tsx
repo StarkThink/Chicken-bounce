@@ -15,15 +15,13 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   const [showChicken, setShowChicken] = useState(false); 
   const [animationInProgress, setAnimationInProgress] = useState(false);
 
-  const chicken_inital_pos_x = 0;
-  const chicken_inital_pos_y = 0;
   const player_initial_row = 2;
   const player_initial_col = 0;
   const matrix_rows = matrix.length;
   const matrix_cols = matrix[0].length;
 
-  const [chickenPositionX, setChickenPositionX] = useState(chicken_inital_pos_x);
-  const [chickenPositionY, setChickenPositionY] = useState(chicken_inital_pos_y);
+  const [chickenPositionX, setChickenPositionX] = useState(0);
+  const [chickenPositionY, setChickenPositionY] = useState(0);
   const [playerTargetSelection, setPlayerTargetSelection] = useState([0, 0]);
   const [cellWidth, setCellWidth] = useState(0);
   const [cellHeight, setCellHeight] = useState(0);
@@ -61,11 +59,11 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
 
     // Show chicken after 1.5 seconds
     setTimeout(() => {
-      setChickenPositionX(chicken_inital_pos_x);
-      setChickenPositionY(chicken_inital_pos_y);
+      setChickenPositionX(0);
+      setChickenPositionY(0);
 
       setShowChicken(true);
-      startChickenMovement(true, chicken_inital_pos_x, chicken_inital_pos_y, true, false, 0, 0); 
+      startChickenMovement(true, 0, 0, true, false, 0, 0); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -84,12 +82,10 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
 
   const is_in_the_middle_of_cell = (xPos: number, yPos: number) => {
     xPos = xPos > 0 ? xPos : -xPos;
-    let cell_height = cellHeight - chicken_inital_pos_y;
-    let cell_width = cellWidth - chicken_inital_pos_x;
     yPos = yPos >= 0 ? yPos: -yPos;
     if (
-      (xPos % cell_width >= 0) && (xPos % cell_width <= 5) && 
-      (yPos % cell_height >= 0) && (yPos % cell_height <= 5)
+      (xPos % cellWidth >= 0) && (xPos % cellWidth <= 5) && 
+      (yPos % cellHeight >= 0) && (yPos % cellHeight <= 5)
     ) {
       return true;
     }
