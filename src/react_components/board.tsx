@@ -189,12 +189,14 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
         hit_stick = false;
       }
 
+      const chickenSound = new Audio('../public/assets/chicken-noise.mp3');
       if (cell === 'stickE') {
         console.log('hit stickE', hit_stick)
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
           setStickVisibility((prev) => ({ ...prev, [key]: true }));
+          chickenSound.play();
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           startChickenMovement(
             !move_on_x, 
@@ -213,6 +215,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
           setStickVisibility((prev) => ({ ...prev, [key]: true }));
+          chickenSound.play();
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           startChickenMovement(
@@ -237,7 +240,6 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   };
 
   function hitEffect(colIndex: number, rowIndex: number) {
-
     const selector = `.stick-e-line[data-key="${colIndex}-${rowIndex}"]`;
     const element = document.querySelector(selector);
     if (element) {
