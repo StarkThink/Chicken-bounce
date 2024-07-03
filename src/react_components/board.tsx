@@ -10,14 +10,27 @@ interface BoardProps {
   matrix: string[][];
 }
 
+const getPlayerInitialPosition = (matrix: string[][]) => {
+  let playerInitialPosition = [0, 0];
+  matrix.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      if (cell === 'player') {
+        playerInitialPosition = [colIndex, rowIndex];
+      }
+    });
+  });
+  return playerInitialPosition;
+}
+
 const Board: React.FC<BoardProps> = ({ matrix }) => {
   const [showCannonExplode, setShowCannonExplode] = useState(false); 
   const [showChicken, setShowChicken] = useState(false); 
   const [animationInProgress, setAnimationInProgress] = useState(false);
   const [stickVisibility, setStickVisibility] = useState<{ [key: string]: boolean }>({});
 
-  const player_initial_row = 2;
-  const player_initial_col = 0;
+  const player_initial_pos = getPlayerInitialPosition(matrix);
+  const player_initial_row = player_initial_pos[1];
+  const player_initial_col = player_initial_pos[0];
   const matrix_rows = matrix.length;
   const matrix_cols = matrix[0].length;
 
@@ -138,6 +151,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       let pos_x = move_on_x ? newPosition : current_x;
       let pos_y = move_on_x ? current_y : newPosition;
       let pos_chicken_matrix = get_chicken_pos(pos_x, pos_y);
+      console.log('pos_chicken_matrix', pos_chicken_matrix)
 
       // Stop moving chicken if it reaches the end of the board
       if (
