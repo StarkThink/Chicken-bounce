@@ -3,7 +3,9 @@ import './components.css';
 
 // Import your images
 import playerImage from '../../public/assets/canion.png';
+import playerImageInverted from '../../public/assets/canion-inverted.png';
 import canionExplode from '../../public/assets/cannon-explode.gif';
+import canionExplodeInverted from '../../public/assets/cannon-explode-inverted.gif';
 import chickenImage from '../../public/assets/chicken.gif';
 
 interface BoardProps {
@@ -33,6 +35,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   const player_initial_col = player_initial_pos[0];
   const matrix_rows = matrix.length;
   const matrix_cols = matrix[0].length;
+  const isInverted = player_initial_col > 0;
 
   const [chickenPositionX, setChickenPositionX] = useState(0);
   const [chickenPositionY, setChickenPositionY] = useState(0);
@@ -78,7 +81,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       setChickenPositionY(0);
 
       setShowChicken(true);
-      startChickenMovement(true, 40, 0, true, false, 0, 0, colIndex, rowIndex); 
+      startChickenMovement(true, isInverted ? -40 : 40, 0, !isInverted, false, 0, 0, colIndex, rowIndex); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -115,20 +118,29 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   }, [matrix]);  
 
   const get_chicken_pos = (xPos: number, yPos: number) => {
-    xPos = xPos + cellWidth / 2;
-    yPos = yPos + cellHeight / 2;
+
     let colIndex = (Math.floor(xPos / cellWidth)) + player_initial_col;
     let rowIndex = (Math.floor(yPos / cellHeight)) + player_initial_row;
     return { colIndex, rowIndex };
   };
 
   const is_in_the_middle_of_cell = (xPos: number, yPos: number) => {
-    xPos = xPos > 0 ? xPos : -xPos;
+    xPos = xPos >= 0 ? xPos : -xPos;
     yPos = yPos >= 0 ? yPos: -yPos;
+
+    let cell_width = cellWidth + cellWidth / 2;
+    let cell_height = cellHeight + cellHeight / 2;
+    if (!isInverted){
+      cell_width = cellWidth;
+      cell_height = cellHeight;
+    }
+    
+    console.log('xPos % cell_width', xPos % cell_width, 'yPos % cell_height', yPos % cell_height)
     if (
-      (xPos % cellWidth >= 0) && (xPos % cellWidth <= 10) && 
-      (yPos % cellHeight >= 0) && (yPos % cellHeight <= 10)
+      (xPos % cell_width >= 0) && (xPos % cell_width <= 10) && 
+      (yPos % cell_height >= 0) && (yPos % cell_height <= 10)
     ) {
+      console.log('in the middle')
       return true;
     }
     return false;
@@ -150,8 +162,8 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       newPosition = newPosition + (going_up ? 10 : -10); // Calculate new position X
       let pos_x = move_on_x ? newPosition : current_x;
       let pos_y = move_on_x ? current_y : newPosition;
+      console.log('pos_x', pos_x, 'pos_y', pos_y)
       let pos_chicken_matrix = get_chicken_pos(pos_x, pos_y);
-      console.log('pos_chicken_matrix', pos_chicken_matrix)
 
       // Stop moving chicken if it reaches the end of the board
       if (
@@ -190,8 +202,8 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       }
 
       const chickenSound = new Audio('../public/assets/chicken-noise.mp3');
+      console.log('cell', cell)
       if (cell === 'stickE') {
-        console.log('hit stickE', hit_stick)
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
@@ -211,7 +223,6 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           );
         }
       } else if (cell === 'stickW') {
-        console.log('hit stickW', hit_stick)
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
           setStickVisibility((prev) => ({ ...prev, [key]: true }));
@@ -290,7 +301,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
                 {/* Show GIF */}
                 {showCannonExplode && (
                   <img
-                    src={canionExplode}
+                    src={isInverted ? canionExplodeInverted : canionExplode}
                     alt="Canion Explode"
                     className="player-image"
                   />
@@ -312,7 +323,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
                 {/* Show static player image */}
                 {!showCannonExplode && (
                   <img
-                    src={playerImage}
+                    src={isInverted ? playerImageInverted : playerImage}
                     alt="Player"
                     className="player-image"
                   />
