@@ -14,16 +14,15 @@ code {
   
 .pixel-art-button {
     font-family: 'Courier New', monospace;
-    font-size: 4rem;
-    padding: 1rem 10rem;
+    /* font-size: 4rem; */
+    /* padding: 1rem 10rem; */
     border: none;
     background-color: #dd6767;
     color: #fff;
     outline: none;
     cursor: pointer;
     border-radius: 5px;
-    image-rendering: pixelated; /* Ensures the font stays pixelated */
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25); /* Adds a shadow */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
   
 .pixel-art-button:hover {
@@ -41,6 +40,22 @@ code {
     align-items: center;
     background: url('./background1.gif') no-repeat center center;
     background-size: cover; /* Ensures the image covers the entire container */
+}
+
+.tile-gif {
+    height: 10%;
+    width: 50%;
+    /* margin-bottom: 20px; */
+    background: url('./assets/title.gif') no-repeat center center;
+    background-size: 100% 100%;
+}
+
+@media (max-width: 640px) {
+    .tile-gif {
+        height: 10%;
+        width: 80%;
+        background-size: 110% 150%;
+    }
 }
 
 .game-image-container {
@@ -89,7 +104,6 @@ code {
     z-index: 10; /* Ensure title is above image and overlay */
     color: #fff; /* White color for visibility */
     text-align: center;
-    margin-bottom: 20px; /* Spacing between title and button */
 }
 
 .account-display {
@@ -102,21 +116,30 @@ code {
     margin-bottom: 20px; /* Spacing between title and button */
 }
 
+input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .account-container {
+    color: black;
     z-index: 10;
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
-}
-
-.account-buttons button {
-    margin: 10px;
+    border-radius: 5px;
+    margin-bottom: 250px;
+    background: #e4e9f3;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
   
 .centered-button {
     z-index: 10; /* Ensures the button is above the image and overlay */
-    margin-top: 100px; /* Extra spacing if needed */
     align-items: center;
     text-align: center;
 }
