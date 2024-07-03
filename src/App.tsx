@@ -35,6 +35,7 @@ const App: React.FC = () => {
 
     return (
         <div className="image-container">
+            <div className="tile-gif"></div>
             <div className="account-container">
                 <div>
                     <div className="account-player">

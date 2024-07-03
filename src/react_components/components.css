@@ -229,23 +229,32 @@
 .collected-characters-container {
     padding: 20px;
     background: black;
-    /* border: 1px solid red; */
 }
 
 .leaderboard-wrapper {
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0);
-    padding: 20px;
+    padding: 30px;
+    color: black;
+    background: rgba(251, 247, 247, 0.7);
+    border-radius: 5px;
 }
 
 .leaderboard-scores{
     font-family: var(--font-family);
     font-weight: bold;
     font-size: 2rem;
-    color: yellow;
-    text-align: center;
+    color: black;
     margin-top: 20px;
+}
+
+.leaderboard-scores p {
+    padding-top: 35px;
+    border-bottom: 1px solid black;
+}
+
+.leaderboard-scores p span {
+    padding: 5px;
+    background: rgb(36, 181, 36);
+    border-radius: 0px 22px;
 }
 
 .button-play-again-content{
@@ -264,7 +273,7 @@
     margin-left: 20%;
     width: 60%;
     border: none;
-    background-color: rgb(51, 179, 72);
+    background-color: #FFA500;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
@@ -273,13 +282,30 @@
 }
 
 .button-play-again:hover {
-	background-color: rgb(21, 126, 39);
+	background-color: #FF8C00;
     transition: ease-in-out 0.3s;
+}
+
+.leaderboard-title {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .board-content{
     width: 100%;
     height: 90vh;
+}
+
+.canion-gif {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.canion-chicken-gif {
+    width: 120px;
+    margin-top: 10px;
 }
 
 .board-container {
@@ -449,4 +475,158 @@
     background-size: contain; /* Ensures the image covers the entire element */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
+  }
+
+/* General styles for the body */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styles for the leaderboard container */
+.leaderboard {
+    /* width: 100%; */
+    max-width: 600px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+}
+
+.stars-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+/* Styles for the leaderboard title */
+.leaderboard h1 {
+    background-color: #4CAF50;
+    font-size: 33px;
+    margin: 0;
+    padding: 15px;
+    color: white;
+}
+
+/* Styles for the leaderboard table */
+.leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard th, .leaderboard td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.leaderboard tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Styles for the header row */
+.leaderboard th {
+    background-color: #4CAF50;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* Styles for the position column */
+.position, .score {
+    width: 10%;
+    text-align: center;
+}
+
+/* Styles for the player name column */
+.player {
+    width: 60%;
+}
+
+/* Styles for the score column */
+.score {
+    width: 30%;
+    text-align: right;
+}
+
+/* Styles for the button */
+.leaderboard .button-container {
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.leaderboard .button-container button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.leaderboard .button-container button:hover {
+    background-color: #45a049;
+}
+
+/* Styles for the GIF container */
+.leaderboard .gif-container {
+    padding: 15px;
+}
+
+.leaderboard .gif-container img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+    .leaderboard th, .leaderboard td {
+        padding: 10px;
+    }
+
+    .leaderboard h1 {
+        font-size: 20px;
+    }
+
+    .leaderboard .button-container button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+td {
+    color: black;
+}
+
+.star {
+    font-size: 40px;
+    animation: pulse 1s infinite alternate;
+  }
+  
+  .star.middle {
+    font-size: 70px;
+  }
+
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.2);
+    }
   }
