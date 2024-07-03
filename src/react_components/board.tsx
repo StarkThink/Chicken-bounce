@@ -3,8 +3,8 @@ import './components.css';
 
 // Import your images
 import playerImage from '../../public/assets/canion.png';
-import canionExplode from '../../public/assets/chicken.gif';
-import chickenImage from '../../public/assets/chicken.png';
+import canionExplode from '../../public/assets/cannon-explode.gif';
+import chickenImage from '../../public/assets/chicken.gif';
 
 interface BoardProps {
   matrix: string[][];
@@ -14,6 +14,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   const [showCannonExplode, setShowCannonExplode] = useState(false); 
   const [showChicken, setShowChicken] = useState(false); 
   const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [stickVisibility, setStickVisibility] = useState<{ [key: string]: boolean }>({});
 
   const player_initial_row = 2;
   const player_initial_col = 0;
@@ -64,7 +65,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       setChickenPositionY(0);
 
       setShowChicken(true);
-      startChickenMovement(true, 0, 0, true, false, 0, 0, colIndex, rowIndex); 
+      startChickenMovement(true, 40, 0, true, false, 0, 0, colIndex, rowIndex); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -72,6 +73,33 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       setShowCannonExplode(false);
     }, 2000);
   };
+
+  useEffect(() => {
+    const stickKeys = matrix.flatMap((row, rowIndex) =>
+      row.map((cell, colIndex) => {
+        if (cell === 'stickE' || cell === 'stickW') {
+          return `${colIndex}-${rowIndex}`;
+        }
+        return null;
+      }).filter(Boolean)
+    );
+  
+    const initialVisibility: { [key: string]: boolean } = {};
+    stickKeys.forEach((key) => {
+      initialVisibility[key as string] = true;
+    });
+    setStickVisibility(initialVisibility);
+  
+    const timer = setTimeout(() => {
+      const newVisibility = { ...initialVisibility };
+      stickKeys.forEach((key) => {
+        newVisibility[key as string] = false;
+      });
+      setStickVisibility(newVisibility);
+    }, 1000);
+  
+    return () => clearTimeout(timer);
+  }, [matrix]);  
 
   const get_chicken_pos = (xPos: number, yPos: number) => {
     xPos = xPos + cellWidth / 2;
@@ -150,8 +178,9 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       if (cell === 'stickE') {
         console.log('hit stickE', hit_stick)
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
-          console.log('changing direction');
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
+          const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
+          setStickVisibility((prev) => ({ ...prev, [key]: true }));
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           startChickenMovement(
             !move_on_x, 
@@ -168,7 +197,8 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       } else if (cell === 'stickW') {
         console.log('hit stickW', hit_stick)
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
-          console.log('changing direction');
+          const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
+          setStickVisibility((prev) => ({ ...prev, [key]: true }));
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           startChickenMovement(
@@ -186,13 +216,14 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       } else {
         hit_stick = false;
       }
-    }, 30);
+    }, 25);
 
     // Clean up interval when component unmounts or when no longer needed
     return () => clearInterval(interval);
   };
 
   function hitEffect(colIndex: number, rowIndex: number) {
+
     const selector = `.stick-e-line[data-key="${colIndex}-${rowIndex}"]`;
     const element = document.querySelector(selector);
     if (element) {
@@ -257,7 +288,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
                     style={{
                       display: 'block',
                       position: 'absolute',
-                      top: `${chickenPositionY}px`,
+                      top: `calc(${chickenPositionY}px - 50%)`,
                       left: `${chickenPositionX}px`,
                     }}
                   />
@@ -272,11 +303,11 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
                 )}
               </div>
             )}
-            {cell === 'stickE' && (
-              <div className="stick-e-line" data-key={`${colIndex}-${rowIndex}`}></div>
+            {cell === 'stickE' && stickVisibility[`${colIndex}-${rowIndex}`] && (
+              <div className="stick-e-line hit" data-key={`${colIndex}-${rowIndex}`}></div>
             )}
-            {cell === 'stickW' && (
-              <div className="stick-w-line" data-key={`${colIndex}-${rowIndex}`}></div>
+            {cell === 'stickW' && stickVisibility[`${colIndex}-${rowIndex}`] && (
+              <div className="stick-w-line hit" data-key={`${colIndex}-${rowIndex}`}></div>
             )}
             {((cell === 'blank' || cell === 'target') && !(playerTargetSelection[0] === colIndex && playerTargetSelection[1] === rowIndex)) && (
               <div className="blank-cell-content" data-key={`${colIndex}-${rowIndex}`}></div>

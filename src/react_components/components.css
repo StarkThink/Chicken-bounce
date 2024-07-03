@@ -363,7 +363,7 @@
 }
 
 .chicken-image {
-  height: 100%;
+  height: 160%;
   position: absolute; /* Ensure it's positioned correctly */
   object-fit: cover; /* Adjust as needed (cover, contain, etc.) */
   z-index: 1;
@@ -469,8 +469,8 @@
 
   .player-target-selection {
     background-image: url('/assets/target.png');
-    width: 55%;
-    height: 55%;
+    width: 50%;
+    height: 50%;
     border-radius: 0%;
     background-color: rgba(0, 0, 0, 0);
     background-size: cover; /* Ensures the image covers the entire element */
