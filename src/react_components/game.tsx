@@ -89,9 +89,9 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
             <>
               <div className="board-header">
                 <div>
-                  <p>Player: test</p>
-                  <p>Round: 1</p>
-                  <p>Score: 0</p>
+                  <p>Player: <span>Test</span></p>
+                  <p>Round: <span>1</span></p>
+                  <p>Score: <span>0</span></p>
                   <p className="how-to-play" onClick={handleModalToggle}>
                     How to play?
                   </p>
