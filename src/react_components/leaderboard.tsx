@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './components.css';
 import App from '../App';
 import { useDojo } from "../dojo/useDojo";
-import Canion from "../assets/canion-chicken.gif";
+import Canion from "../../public/assets/canion-chicken.gif";
 
 const Leaderboard = () => {
   const [playAgain, setPlayAgain] = useState(false);
