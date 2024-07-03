@@ -328,8 +328,8 @@
 
 .chicken-image {
   height: 100%;
-  width: 100%; /* Maintain aspect ratio */
   position: absolute; /* Ensure it's positioned correctly */
+  object-fit: cover; /* Adjust as needed (cover, contain, etc.) */
   z-index: 1;
 }
   
@@ -433,11 +433,20 @@
 
   .player-target-selection {
     background-image: url('/assets/target.png');
-    width: 80%;
-    height: 80%;
+    width: 55%;
+    height: 55%;
     border-radius: 0%;
     background-color: rgba(0, 0, 0, 0);
     background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+  }
+
+  .player-target-win {
+    background-image: url('/assets/target-win.gif');
+    width: 100%;
+    height: 100%;
+    background-size: contain; /* Ensures the image covers the entire element */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
   }

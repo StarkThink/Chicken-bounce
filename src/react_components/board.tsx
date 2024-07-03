@@ -52,6 +52,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
 
   // Function to handle cell click
   const handleCellClick = (rowIndex: number, colIndex: number) => {
+    console.log('rowIndex', rowIndex, 'colIndex', colIndex)
     if (animationInProgress) return;
     setAnimationInProgress(true);
     setShowCannonExplode(true);
@@ -63,7 +64,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       setChickenPositionY(0);
 
       setShowChicken(true);
-      startChickenMovement(true, 0, 0, true, false, 0, 0); 
+      startChickenMovement(true, 0, 0, true, false, 0, 0, colIndex, rowIndex); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -84,8 +85,8 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
     xPos = xPos > 0 ? xPos : -xPos;
     yPos = yPos >= 0 ? yPos: -yPos;
     if (
-      (xPos % cellWidth >= 0) && (xPos % cellWidth <= 5) && 
-      (yPos % cellHeight >= 0) && (yPos % cellHeight <= 5)
+      (xPos % cellWidth >= 0) && (xPos % cellWidth <= 10) && 
+      (yPos % cellHeight >= 0) && (yPos % cellHeight <= 10)
     ) {
       return true;
     }
@@ -99,17 +100,13 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
     going_up: boolean,
     hit_stick: boolean,
     row_hit_stick: number,
-    col_hit_stick: number
+    col_hit_stick: number,
+    target_col_sel: number,
+    target_row_sel: number,
   ) => {
     let newPosition = move_on_x ? current_x : current_y;
     const interval = setInterval(() => {
-      newPosition = newPosition + (going_up ? 5 : -5); // Calculate new position X
-      if (move_on_x) {
-        setChickenPositionX(newPosition); // Update chicken position X directly
-      } else {
-        setChickenPositionY(newPosition); 
-      }
-
+      newPosition = newPosition + (going_up ? 10 : -10); // Calculate new position X
       let pos_x = move_on_x ? newPosition : current_x;
       let pos_y = move_on_x ? current_y : newPosition;
       let pos_chicken_matrix = get_chicken_pos(pos_x, pos_y);
@@ -125,9 +122,26 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
         setAnimationInProgress(false);
         return;
       }
-
       let cell = matrix[pos_chicken_matrix.rowIndex][pos_chicken_matrix.colIndex];
-      console.log('player is at: ', pos_chicken_matrix.rowIndex, pos_chicken_matrix.colIndex, cell);
+      if (cell === 'blank' || cell == 'target'){
+        if (
+          cell == 'target' && 
+          target_col_sel === pos_chicken_matrix.colIndex && 
+          target_row_sel === pos_chicken_matrix.rowIndex
+        ) {
+          winEffect();
+        }
+        clearInterval(interval);
+        setAnimationInProgress(false);
+        return;
+      }
+
+      if (move_on_x) {
+        setChickenPositionX(newPosition); // Update chicken position X directly
+      } else {
+        setChickenPositionY(newPosition); 
+      }
+
       // If chicken hits a stick but now we are not in the same position
       if (row_hit_stick !== pos_chicken_matrix.rowIndex || col_hit_stick !== pos_chicken_matrix.colIndex) {
         hit_stick = false;
@@ -140,7 +154,15 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           startChickenMovement(
-            !move_on_x, pos_x, pos_y, going_up, true, pos_chicken_matrix.rowIndex, pos_chicken_matrix.colIndex
+            !move_on_x, 
+            pos_x, 
+            pos_y, 
+            going_up, 
+            true, 
+            pos_chicken_matrix.rowIndex, 
+            pos_chicken_matrix.colIndex,
+            target_col_sel,
+            target_row_sel
           );
         }
       } else if (cell === 'stickW') {
@@ -150,7 +172,15 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           hitEffect(pos_chicken_matrix.colIndex, pos_chicken_matrix.rowIndex);
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           startChickenMovement(
-            !move_on_x, pos_x, pos_y, !going_up, true, pos_chicken_matrix.rowIndex, pos_chicken_matrix.colIndex
+            !move_on_x, 
+            pos_x, 
+            pos_y, 
+            !going_up, 
+            true, 
+            pos_chicken_matrix.rowIndex, 
+            pos_chicken_matrix.colIndex,
+            target_col_sel,
+            target_row_sel
           ); // Start moving chicken on Y axis
         }
       } else {
@@ -185,7 +215,14 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       }
     }
   }
-  
+  function winEffect() {
+    const elements = document.querySelectorAll('.player-target-selection');
+    elements.forEach(element => {
+      element.classList.remove('player-target-selection');
+      element.classList.add('player-target-win');
+    });
+    setShowChicken(false);
+  }
 
   return (
     <div className="board-container" ref={boardRef}>
