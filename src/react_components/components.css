@@ -283,45 +283,55 @@
 }
 
 .board-container {
-    display: grid;
-    grid-template-columns: repeat(7, 13%); /* 7 columns, each 30 pixels wide */
-    grid-template-rows: repeat(7, 13%); /* 7 rows, each 30 pixels tall */
-    gap: 2px;
-    border: 2px solid #333;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .cell {
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.5rem;
-    position: relative; /* Ensure proper positioning for image overlay */
-    cursor: pointer; /* Add cursor pointer on hover */
-  }
+  display: grid;
+  grid-template-columns: repeat(7, 13%); /* 7 columns, each 13% of the container width */
+  grid-template-rows: repeat(7, 13%); /* 7 rows, each 13% of the container height */
+  gap: 2px;
+  border: 2px solid #333;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+}
 
-  .player-content {
-    position: relative;
-  }
-  
-  .player-image {
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 60%;
-    z-index: 2;
-  }
+.cell {
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Ensure proper positioning for image overlay */
+  cursor: pointer; /* Add cursor pointer on hover */
+}
 
-  .chicken-image {
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 60%;
-    z-index: 1;
-  }
+.player-cell {
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.player-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-image {
+  height: 100%;
+  width: 100%; /* Ensure it fills the cell */
+  object-fit: cover; /* Adjust as needed (cover, contain, etc.) */
+  z-index: 2;
+}
+
+.chicken-image {
+  height: 100%;
+  width: 100%; /* Maintain aspect ratio */
+  position: absolute; /* Ensure it's positioned correctly */
+  z-index: 1;
+}
   
   
   .cell.empty {
@@ -350,6 +360,56 @@
     border-radius: 20%;
     transform: rotate(40deg);
   }
+  
+  @keyframes hitEAnimation {
+    0% {
+      transform: rotate(40deg) translateX(0);
+    }
+    20% {
+      transform: rotate(40deg) translateX(-10px);
+    }
+    40% {
+      transform: rotate(40deg) translateX(20px);
+    }
+    60% {
+      transform: rotate(40deg) translateX(-15px);
+    }
+    80% {
+      transform: rotate(40deg) translateX(10px);
+    }
+    100% {
+      transform: rotate(40deg) translateX(0);
+    }
+  }
+
+  @keyframes hitWAnimation {
+    0% {
+      transform: rotate(-40deg) translateX(0);
+    }
+    20% {
+      transform: rotate(-40deg) translateX(-10px);
+    }
+    40% {
+      transform: rotate(-40deg) translateX(20px);
+    }
+    60% {
+      transform: rotate(-40deg) translateX(-15px);
+    }
+    80% {
+      transform: rotate(-40deg) translateX(10px);
+    }
+    100% {
+      transform: rotate(-40deg) translateX(0);
+    }
+  }
+  
+  .stick-e-line.hit {
+    animation: hitEAnimation 0.5s ease-in-out;
+  }
+
+  .stick-w-line.hit {
+    animation: hitWAnimation 0.5s ease-in-out;
+  }
 
   .stick-w-line {
     width: 50%;
@@ -358,3 +418,26 @@
     transform: rotate(-40deg);
   }
   
+  .blank-cell {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+
+  .blank-cell-content {
+    width: 30%;
+    height: 30%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
+
+  .player-target-selection {
+    background-image: url('/assets/target.png');
+    width: 80%;
+    height: 80%;
+    border-radius: 0%;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+  }

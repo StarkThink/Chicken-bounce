@@ -4,7 +4,6 @@ import "./App.css";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
 import Game  from "./react_components/game";
-import { GAME_ID } from "./constants/localStorage";
 
 const App: React.FC = () => {
     const {

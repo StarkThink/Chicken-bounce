@@ -6,9 +6,8 @@ import Leaderboard from './leaderboard';
 import Modal from './modal';
 import "../App.css";
 import { BurnerAccount } from '@dojoengine/create-burner';
-import gifImage from '../assets/countdown.gif';
+import gifImage from '../../public/assets/countdown.gif';
 import './components.css';
-import sound from "../assets/sound.mp3"
 import './components.css';
 
 interface GameProps {
@@ -35,7 +34,7 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
     ["blank", "alien", "empty", "empty", "alien", "empty", "blank"],
     ["blank", "empty", "empty", "empty", "stickE", "empty", "blank"],
     ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
-    ["blank", "empty", "stickE", "empty", "empty", "empty", "blank"]
+    ["blank", "blank", "blank", "blank", "blank", "blank", "blank"]
   ];
 
   const [showModal, setShowModal] = useState(false);
