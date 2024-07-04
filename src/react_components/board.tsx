@@ -79,13 +79,9 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
 
   const executePlay = async(rowIndex: number, colIndex: number) => {
     await play(account.account, game_id, rowIndex, colIndex).then((gameWin) => {
-      if (gameWin) {
-        console.log('Game win')
-      } else {
-        console.log('Game lost')
-      }
+      return gameWin;
     });
-};
+  };
 
   const updateCellDimensions = () => {
     if (boardRef.current) {
@@ -139,7 +135,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
     if (animationInProgress) return;
     if (!isValidMove(rowIndex, colIndex)) return;
-    await executePlay(rowIndex, colIndex);
+    let result = await executePlay(rowIndex, colIndex);
     setAnimationInProgress(true);
     setShowCannonExplode(true);
     setPlayerTargetSelection([colIndex, rowIndex]);
@@ -151,7 +147,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
 
       setShowChicken(true);
       let diff = center_chicken();
-      startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex); 
+      startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex, result); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -233,6 +229,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
     col_hit_stick: number,
     target_col_sel: number,
     target_row_sel: number,
+    gameWin: boolean
   ) => {
     let newPosition = move_on_x ? current_x : current_y;
     const interval = setInterval(() => {
@@ -249,6 +246,11 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
         pos_chicken_matrix.colIndex < 0
       ) {
         console.log('reached the end of the board')
+        if (gameWin) {
+          winEffect();
+        } else {
+          console.log('lost')
+        }
         clearInterval(interval);
         setAnimationInProgress(false);
         return;
@@ -261,8 +263,11 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
           target_col_sel === pos_chicken_matrix.colIndex && 
           target_row_sel === pos_chicken_matrix.rowIndex
         ) {
-          console.log('win')
-          winEffect();
+          if (gameWin) {
+            winEffect();
+          } else {
+            console.log('lost')
+          }
         }
         console.log('reached target')
         clearInterval(interval);
@@ -298,7 +303,8 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
             pos_chicken_matrix.rowIndex, 
             pos_chicken_matrix.colIndex,
             target_col_sel,
-            target_row_sel
+            target_row_sel,
+            gameWin
           );
         }
       } else if (cell === 'stickE') {
@@ -317,7 +323,8 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
             pos_chicken_matrix.rowIndex, 
             pos_chicken_matrix.colIndex,
             target_col_sel,
-            target_row_sel
+            target_row_sel,
+            gameWin
           ); // Start moving chicken on Y axis
         }
       } else {
