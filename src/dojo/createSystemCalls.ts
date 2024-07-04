@@ -4,11 +4,7 @@ import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent"
 import { getPlayEvents } from "../utils/playEvents";
-<<<<<<< Updated upstream
-import { CREATE_GAME_EVENT } from "../constants/dojoEventKeys";
-=======
 import { CREATE_GAME_EVENT, GAME_EVENT } from "../constants/dojoEventKeys";
->>>>>>> Stashed changes
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -77,13 +73,9 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
-<<<<<<< Updated upstream
-                return getPlayEvents(events);
-=======
                 const score = getNumberValueFromEvents(events, GAME_EVENT, true, 0);
                 const round = getNumberValueFromEvents(events, GAME_EVENT, true, 1);
                 return {score: score, round: round};
->>>>>>> Stashed changes
             } else {
                 console.error("Error creating round:", tx);
                 return {score: 0, round: 0};
