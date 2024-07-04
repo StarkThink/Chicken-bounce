@@ -74,13 +74,13 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
   const [playerTargetSelection, setPlayerTargetSelection] = useState([-1, -1]);
   const [cellWidth, setCellWidth] = useState(0);
   const [cellHeight, setCellHeight] = useState(0);
+  const [isLoser, setIsLoser] = useState(false);
 
   const boardRef = useRef<HTMLDivElement>(null);
 
   const executePlay = async(rowIndex: number, colIndex: number) => {
-    await play(account.account, game_id, rowIndex, colIndex).then((gameWin) => {
-      return gameWin;
-    });
+    const game_win = await play(account.account, game_id, rowIndex, colIndex);
+    return game_win;
   };
 
   const updateCellDimensions = () => {
@@ -135,25 +135,28 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
     if (animationInProgress) return;
     if (!isValidMove(rowIndex, colIndex)) return;
-    let result = await executePlay(rowIndex, colIndex);
-    setAnimationInProgress(true);
-    setShowCannonExplode(true);
-    setPlayerTargetSelection([colIndex, rowIndex]);
+    executePlay(rowIndex, colIndex).then((result) => {
+      // Place the rest of your code that depends on `result` here.
+      console.log('result', result);
+      setAnimationInProgress(true);
+      setShowCannonExplode(true);
+      setPlayerTargetSelection([colIndex, rowIndex]);
 
-    // Show chicken after 1.5 seconds
-    setTimeout(() => {
-      setChickenPositionX(0);
-      setChickenPositionY(0);
+      // Show chicken after 1.5 seconds
+      setTimeout(() => {
+        setChickenPositionX(0);
+        setChickenPositionY(0);
 
-      setShowChicken(true);
-      let diff = center_chicken();
-      startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex, result); 
-    }, 1500);
+        setShowChicken(true);
+        let diff = center_chicken();
+        startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex, result); 
+      }, 1500);
 
-    // Wait for 2 seconds before hiding the cannon explode
-    setTimeout(() => {
-      setShowCannonExplode(false);
-    }, 2000);
+      // Wait for 2 seconds before hiding the cannon explode
+      setTimeout(() => {
+        setShowCannonExplode(false);
+      }, 2000);
+    });
   };
 
   useEffect(() => {
@@ -250,6 +253,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
           winEffect();
         } else {
           console.log('lost')
+          setIsLoser(true);
         }
         clearInterval(interval);
         setAnimationInProgress(false);
@@ -258,16 +262,11 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
 
       let cell = matrix[pos_chicken_matrix.rowIndex][pos_chicken_matrix.colIndex];
       if (cell === 'blank' || cell == 'target'){
-        if (
-          cell == 'target' && 
-          target_col_sel === pos_chicken_matrix.colIndex && 
-          target_row_sel === pos_chicken_matrix.rowIndex
-        ) {
-          if (gameWin) {
-            winEffect();
-          } else {
-            console.log('lost')
-          }
+        if (gameWin) {
+          winEffect();
+        } else {
+          console.log('lost')
+          setIsLoser(true);
         }
         console.log('reached target')
         clearInterval(interval);
@@ -461,7 +460,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
           </div>
         </div>
       )}
-      {/* {isVisible && (
+      {isLoser && (
         <div className="info-lost">
             <div className="x-container">
               <img src={chickenImage} alt="" />
@@ -470,7 +469,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
             <p>You lost</p>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
