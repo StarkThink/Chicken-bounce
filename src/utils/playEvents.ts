@@ -19,7 +19,7 @@ export const getGameWin = (events: DojoEvent[]) => {
 
   export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     const playEvents: PlayEvents = {
-      gameWin: !!events.find((event) => event.keys[0] === GAME_OVER)
+      gameWin: !events.find((event) => event.keys[0] === GAME_OVER)
     };
   
     return playEvents;

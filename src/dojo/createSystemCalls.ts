@@ -49,6 +49,8 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
+                console.log('Play events:', events);
+                console.log('Play events parsed:', getPlayEvents(events));
                 return getPlayEvents(events).gameWin;
             } else {
                 console.error("Error creating game:", tx);
