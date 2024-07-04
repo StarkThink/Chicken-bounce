@@ -1020,8 +1020,8 @@
     {
       "kind": "DojoContract",
       "address": "0xe1250c9f856cb5a8f444aea489a79e8102982cdf52209d8a0f6e249e2dfc75",
-      "class_hash": "0x4ebc5175bdf05236e0d124fe8a90052be26c0f538dfc13d514d0a317e7ca1a8",
-      "original_class_hash": "0x4ebc5175bdf05236e0d124fe8a90052be26c0f538dfc13d514d0a317e7ca1a8",
+      "class_hash": "0x313dd380073441a7284d7029b1f95d31501c38937132d0bbed2e8c734dd3827",
+      "original_class_hash": "0x313dd380073441a7284d7029b1f95d31501c38937132d0bbed2e8c734dd3827",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1101,7 +1101,7 @@
                   "type": "core::integer::u32"
                 }
               ],
-              "state_mutability": "view"
+              "state_mutability": "external"
             },
             {
               "type": "function",
@@ -1113,7 +1113,39 @@
                 }
               ],
               "outputs": [],
-              "state_mutability": "view"
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "play",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "pos_x",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "pos_y",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "end_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
