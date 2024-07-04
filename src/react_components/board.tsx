@@ -155,7 +155,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
       // Wait for 2 seconds before hiding the cannon explode
       setTimeout(() => {
         setShowCannonExplode(false);
-      }, 2000);
+      }, 5000);
     });
   };
 
