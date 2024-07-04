@@ -2,13 +2,14 @@ import { Entity } from "@dojoengine/recs";
 import React, { useState } from 'react';
 import "./App.css";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { GAME_ID } from "./constants/localStorage";
 import { useDojo } from "./dojo/useDojo";
 import Game  from "./react_components/game";
 
 const App: React.FC = () => {
     const {
         setup: {
-            systemCalls: {  },
+            systemCalls: { create_game },
             clientComponents: {  },
         },
         account,
@@ -17,11 +18,27 @@ const App: React.FC = () => {
     const [gameId, setGameId] = useState(0);
 
     const [playerName, setPlayerName] = useState('');
+    const [error, setError] = useState(false);
+
+    const executeCreateGame = (username: string) => {
+        create_game(account.account, username).then((newGameId) => {
+          if (newGameId) {
+            setGameId(newGameId);
+            localStorage.setItem(GAME_ID, newGameId.toString());
+          } else {
+            setError(true);
+          }
+        });
+    };
 
     const handlePlayClick = () => {
         if (playerName === '') {
             console.log('Please enter a player name')
             return;
+        }
+        executeCreateGame(playerName);
+        if (error) {
+            console.log("Error creating game");
         }
         setStartGame(true);
     };

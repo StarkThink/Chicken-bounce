@@ -2,58 +2,74 @@
 
 import { defineComponent, Type as RecsType, World } from "@dojoengine/recs";
 
-export type ContractComponents = Awaited<
-    ReturnType<typeof defineContractComponents>
->;
+export type ContractComponents = Awaited<ReturnType<typeof defineContractComponents>>;
 
 export function defineContractComponents(world: World) {
-    return {
-        DirectionsAvailable: (() => {
-            return defineComponent(
-                world,
-                { player: RecsType.BigInt, directions: RecsType.StringArray },
-                {
-                    metadata: {
-                        name: "DirectionsAvailable",
-                        types: ["contractaddress"],
-                        customTypes: ["Direction"],
-                    },
-                }
-            );
-        })(),
-        Moves: (() => {
-            return defineComponent(
-                world,
-                {
-                    player: RecsType.BigInt,
-                    remaining: RecsType.Number,
-                    last_direction: RecsType.Number,
-                    can_move: RecsType.Boolean,
-                },
-                {
-                    metadata: {
-                        name: "Moves",
-                        types: ["contractaddress", "u8", "enum", "bool"],
-                        customTypes: ["Direction"],
-                    },
-                }
-            );
-        })(),
-        Position: (() => {
-            return defineComponent(
-                world,
-                {
-                    player: RecsType.BigInt,
-                    vec: { x: RecsType.Number, y: RecsType.Number },
-                },
-                {
-                    metadata: {
-                        name: "Position",
-                        types: ["contractaddress", "u32", "u32"],
-                        customTypes: ["Vec2"],
-                    },
-                }
-            );
-        })(),
-    };
+  return {
+    Board: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, len_rows: RecsType.Number, len_cols: RecsType.Number, chicken_in_pos: RecsType.Number, chicken_out_pos: RecsType.Number },
+        {
+          metadata: {
+            name: "Board",
+            types: ["u32","u8","u8","u8","u8"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    Game: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, score: RecsType.Number, round: RecsType.Number, state: RecsType.Boolean },
+        {
+          metadata: {
+            name: "Game",
+            types: ["u32","contractaddress","felt252","u32","u8","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    LeaderBoard: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, len_players: RecsType.Number },
+        {
+          metadata: {
+            name: "LeaderBoard",
+            types: ["u32","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    LeaderBoardPlayers: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, player_name: RecsType.BigInt, score: RecsType.Number },
+        {
+          metadata: {
+            name: "LeaderBoardPlayers",
+            types: ["u32","felt252","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    Tile: (() => {
+      return defineComponent(
+        world,
+        { row_id: RecsType.Number, col_id: RecsType.Number, game_id: RecsType.Number, value: RecsType.Number },
+        {
+          metadata: {
+            name: "Tile",
+            types: ["u32","u32","u32","enum"],
+            customTypes: ["Cell"],
+          },
+        }
+      );
+    })(),
+  };
 }

@@ -999,10 +999,10 @@
         ]
       }
     ],
-    "address": "0xb4079627ebab1cd3cf9fd075dda1ad2454a7a448bf659591f259efa2519b18",
-    "transaction_hash": "0x3a729aa09b4ad351fbc724f94c6d599037a53d7d9b5a182097a60fb09d0486c",
+    "address": "0x6f86fd6ee34b5cfcedb3c9410e87fe1e2116f44d6889a659844b26fe065de29",
+    "transaction_hash": "0x59c588f85cbfa149bcc2fe1e0280126d27fb3cf2502e9e4962dedc1910dce6c",
     "block_number": 3,
-    "seed": "dojo_starter",
+    "seed": "chicken_bounce",
     "metadata": {
       "profile_name": "dev",
       "rpc_url": "http://localhost:5050/"
@@ -1019,9 +1019,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0",
-      "class_hash": "0x6b9e8abff1a178c80f9c18a29a35436d48759a1bcada1f074b1821df0f87119",
-      "original_class_hash": "0x6b9e8abff1a178c80f9c18a29a35436d48759a1bcada1f074b1821df0f87119",
+      "address": "0xe1250c9f856cb5a8f444aea489a79e8102982cdf52209d8a0f6e249e2dfc75",
+      "class_hash": "0x4ebc5175bdf05236e0d124fe8a90052be26c0f538dfc13d514d0a317e7ca1a8",
+      "original_class_hash": "0x4ebc5175bdf05236e0d124fe8a90052be26c0f538dfc13d514d0a317e7ca1a8",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1080,68 +1080,51 @@
         },
         {
           "type": "impl",
-          "name": "ActionsImpl",
-          "interface_name": "dojo_starter::systems::actions::IActions"
-        },
-        {
-          "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
-          "variants": [
-            {
-              "name": "None",
-              "type": "()"
-            },
-            {
-              "name": "Left",
-              "type": "()"
-            },
-            {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
-              "type": "()"
-            }
-          ]
+          "name": "GameImpl",
+          "interface_name": "chicken_bounce::systems::game_system::IGameSystem"
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::IActions",
+          "name": "chicken_bounce::systems::game_system::IGameSystem",
           "items": [
             {
               "type": "function",
-              "name": "spawn",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
+              "name": "create_game",
+              "inputs": [
+                {
+                  "name": "player_name",
+                  "type": "core::felt252"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
             },
             {
               "type": "function",
-              "name": "move",
+              "name": "create_round",
               "inputs": [
                 {
-                  "name": "direction",
-                  "type": "dojo_starter::models::moves::Direction"
+                  "name": "game_id",
+                  "type": "core::integer::u32"
                 }
               ],
               "outputs": [],
-              "state_mutability": "external"
+              "state_mutability": "view"
             }
           ]
         },
         {
           "type": "impl",
           "name": "IDojoInitImpl",
-          "interface_name": "dojo_starter::systems::actions::actions::IDojoInit"
+          "interface_name": "chicken_bounce::systems::game_system::game_system::IDojoInit"
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::actions::IDojoInit",
+          "name": "chicken_bounce::systems::game_system::game_system::IDojoInit",
           "items": [
             {
               "type": "function",
@@ -1201,7 +1184,7 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::systems::actions::actions::Event",
+          "name": "chicken_bounce::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1216,7 +1199,7 @@
       "writes": [],
       "computed": [],
       "init_calldata": [],
-      "name": "dojo_starter::systems::actions::actions"
+      "name": "chicken_bounce::systems::game_system::game_system"
     }
   ],
   "models": [
@@ -1224,18 +1207,33 @@
       "kind": "DojoModel",
       "members": [
         {
-          "name": "player",
-          "type": "ContractAddress",
+          "name": "game_id",
+          "type": "u32",
           "key": true
         },
         {
-          "name": "directions",
-          "type": "Array<Direction>",
+          "name": "len_rows",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "len_cols",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "chicken_in_pos",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "chicken_out_pos",
+          "type": "u8",
           "key": false
         }
       ],
-      "class_hash": "0x13fc796dd2d767ca4051ee20d673074f74b6e6b072bef1926ba429e427c8080",
-      "original_class_hash": "0x13fc796dd2d767ca4051ee20d673074f74b6e6b072bef1926ba429e427c8080",
+      "class_hash": "0x2e142ef5ac763fa0c99a448796680ef8ed30a81f8f4dead93d84a097b4bad33",
+      "original_class_hash": "0x2e142ef5ac763fa0c99a448796680ef8ed30a81f8f4dead93d84a097b4bad33",
       "abi": [
         {
           "type": "impl",
@@ -1557,52 +1555,38 @@
         },
         {
           "type": "impl",
-          "name": "directions_availableImpl",
-          "interface_name": "dojo_starter::models::moves::Idirections_available"
-        },
-        {
-          "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
-          "variants": [
-            {
-              "name": "None",
-              "type": "()"
-            },
-            {
-              "name": "Left",
-              "type": "()"
-            },
-            {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
-              "type": "()"
-            }
-          ]
+          "name": "boardImpl",
+          "interface_name": "chicken_bounce::models::board::Iboard"
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::moves::DirectionsAvailable",
+          "name": "chicken_bounce::models::board::Board",
           "members": [
             {
-              "name": "player",
-              "type": "core::starknet::contract_address::ContractAddress"
+              "name": "game_id",
+              "type": "core::integer::u32"
             },
             {
-              "name": "directions",
-              "type": "core::array::Array::<dojo_starter::models::moves::Direction>"
+              "name": "len_rows",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "len_cols",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "chicken_in_pos",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "chicken_out_pos",
+              "type": "core::integer::u8"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::moves::Idirections_available",
+          "name": "chicken_bounce::models::board::Iboard",
           "items": [
             {
               "type": "function",
@@ -1610,7 +1594,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::moves::DirectionsAvailable"
+                  "type": "chicken_bounce::models::board::Board"
                 }
               ],
               "outputs": [],
@@ -1620,39 +1604,49 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::moves::directions_available::Event",
+          "name": "chicken_bounce::models::board::board::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::moves::directions_available"
+      "name": "chicken_bounce::models::board::board"
     },
     {
       "kind": "DojoModel",
       "members": [
         {
-          "name": "player",
-          "type": "ContractAddress",
+          "name": "id",
+          "type": "u32",
           "key": true
         },
         {
-          "name": "remaining",
+          "name": "owner",
+          "type": "ContractAddress",
+          "key": false
+        },
+        {
+          "name": "player_name",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "score",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "round",
           "type": "u8",
           "key": false
         },
         {
-          "name": "last_direction",
-          "type": "Direction",
-          "key": false
-        },
-        {
-          "name": "can_move",
+          "name": "state",
           "type": "bool",
           "key": false
         }
       ],
-      "class_hash": "0x2f6c0529a3aa4c81c1679408106b2c00013fc19a7088ed9639046c0e3aeac7a",
-      "original_class_hash": "0x2f6c0529a3aa4c81c1679408106b2c00013fc19a7088ed9639046c0e3aeac7a",
+      "class_hash": "0x5691a8bc066eb6e2b979164322042bc5591dc0cd3fcc0bb2f720d7bcd98860d",
+      "original_class_hash": "0x5691a8bc066eb6e2b979164322042bc5591dc0cd3fcc0bb2f720d7bcd98860d",
       "abi": [
         {
           "type": "impl",
@@ -1974,34 +1968,8 @@
         },
         {
           "type": "impl",
-          "name": "movesImpl",
-          "interface_name": "dojo_starter::models::moves::Imoves"
-        },
-        {
-          "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
-          "variants": [
-            {
-              "name": "None",
-              "type": "()"
-            },
-            {
-              "name": "Left",
-              "type": "()"
-            },
-            {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
-              "type": "()"
-            }
-          ]
+          "name": "gameImpl",
+          "interface_name": "chicken_bounce::models::game::Igame"
         },
         {
           "type": "enum",
@@ -2019,29 +1987,37 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::moves::Moves",
+          "name": "chicken_bounce::models::game::Game",
           "members": [
             {
-              "name": "player",
+              "name": "id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "owner",
               "type": "core::starknet::contract_address::ContractAddress"
             },
             {
-              "name": "remaining",
+              "name": "player_name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "round",
               "type": "core::integer::u8"
             },
             {
-              "name": "last_direction",
-              "type": "dojo_starter::models::moves::Direction"
-            },
-            {
-              "name": "can_move",
+              "name": "state",
               "type": "core::bool"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::moves::Imoves",
+          "name": "chicken_bounce::models::game::Igame",
           "items": [
             {
               "type": "function",
@@ -2049,7 +2025,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::moves::Moves"
+                  "type": "chicken_bounce::models::game::Game"
                 }
               ],
               "outputs": [],
@@ -2059,29 +2035,29 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::moves::moves::Event",
+          "name": "chicken_bounce::models::game::game::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::moves::moves"
+      "name": "chicken_bounce::models::game::game"
     },
     {
       "kind": "DojoModel",
       "members": [
         {
-          "name": "player",
-          "type": "ContractAddress",
+          "name": "id",
+          "type": "u32",
           "key": true
         },
         {
-          "name": "vec",
-          "type": "Vec2",
+          "name": "len_players",
+          "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x4312e0e9fa6d912c293311798591e5022744a5fbebefc5ddfcfcc9b7c0c9be1",
-      "original_class_hash": "0x4312e0e9fa6d912c293311798591e5022744a5fbebefc5ddfcfcc9b7c0c9be1",
+      "class_hash": "0x458cbc05c47147b28ac35c88777d460b7d4936e5d02b3fbcb902d20a1e9c92a",
+      "original_class_hash": "0x458cbc05c47147b28ac35c88777d460b7d4936e5d02b3fbcb902d20a1e9c92a",
       "abi": [
         {
           "type": "impl",
@@ -2403,40 +2379,26 @@
         },
         {
           "type": "impl",
-          "name": "positionImpl",
-          "interface_name": "dojo_starter::models::position::Iposition"
+          "name": "leader_boardImpl",
+          "interface_name": "chicken_bounce::models::leader_board::Ileader_board"
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::position::Vec2",
+          "name": "chicken_bounce::models::leader_board::LeaderBoard",
           "members": [
             {
-              "name": "x",
+              "name": "id",
               "type": "core::integer::u32"
             },
             {
-              "name": "y",
+              "name": "len_players",
               "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo_starter::models::position::Position",
-          "members": [
-            {
-              "name": "player",
-              "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "vec",
-              "type": "dojo_starter::models::position::Vec2"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::models::position::Iposition",
+          "name": "chicken_bounce::models::leader_board::Ileader_board",
           "items": [
             {
               "type": "function",
@@ -2444,7 +2406,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::models::position::Position"
+                  "type": "chicken_bounce::models::leader_board::LeaderBoard"
                 }
               ],
               "outputs": [],
@@ -2454,29 +2416,34 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::models::position::position::Event",
+          "name": "chicken_bounce::models::leader_board::leader_board::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::models::position::position"
+      "name": "chicken_bounce::models::leader_board::leader_board"
     },
     {
       "kind": "DojoModel",
       "members": [
         {
-          "name": "player",
-          "type": "ContractAddress",
+          "name": "id",
+          "type": "u32",
           "key": true
         },
         {
-          "name": "direction",
-          "type": "Direction",
+          "name": "player_name",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "score",
+          "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x1e1fa676a44c4b22fe024f3d3a681904fc4fcaececd382b94d794593b811de2",
-      "original_class_hash": "0x1e1fa676a44c4b22fe024f3d3a681904fc4fcaececd382b94d794593b811de2",
+      "class_hash": "0x58e9641f51ab7c402d251d2774f36a76d0f7560f95f132e7eedc9b56c52a560",
+      "original_class_hash": "0x58e9641f51ab7c402d251d2774f36a76d0f7560f95f132e7eedc9b56c52a560",
       "abi": [
         {
           "type": "impl",
@@ -2798,52 +2765,30 @@
         },
         {
           "type": "impl",
-          "name": "movedImpl",
-          "interface_name": "dojo_starter::systems::actions::actions::Imoved"
-        },
-        {
-          "type": "enum",
-          "name": "dojo_starter::models::moves::Direction",
-          "variants": [
-            {
-              "name": "None",
-              "type": "()"
-            },
-            {
-              "name": "Left",
-              "type": "()"
-            },
-            {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
-              "type": "()"
-            }
-          ]
+          "name": "leader_board_playersImpl",
+          "interface_name": "chicken_bounce::models::leader_board_players::Ileader_board_players"
         },
         {
           "type": "struct",
-          "name": "dojo_starter::systems::actions::actions::Moved",
+          "name": "chicken_bounce::models::leader_board_players::LeaderBoardPlayers",
           "members": [
             {
-              "name": "player",
-              "type": "core::starknet::contract_address::ContractAddress"
+              "name": "id",
+              "type": "core::integer::u32"
             },
             {
-              "name": "direction",
-              "type": "dojo_starter::models::moves::Direction"
+              "name": "player_name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "score",
+              "type": "core::integer::u32"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::actions::Imoved",
+          "name": "chicken_bounce::models::leader_board_players::Ileader_board_players",
           "items": [
             {
               "type": "function",
@@ -2851,7 +2796,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "dojo_starter::systems::actions::actions::Moved"
+                  "type": "chicken_bounce::models::leader_board_players::LeaderBoardPlayers"
                 }
               ],
               "outputs": [],
@@ -2861,12 +2806,445 @@
         },
         {
           "type": "event",
-          "name": "dojo_starter::systems::actions::actions::moved::Event",
+          "name": "chicken_bounce::models::leader_board_players::leader_board_players::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "dojo_starter::systems::actions::actions::moved"
+      "name": "chicken_bounce::models::leader_board_players::leader_board_players"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "row_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "col_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "value",
+          "type": "Cell",
+          "key": false
+        }
+      ],
+      "class_hash": "0x4736a4f02c1f3d7ad3ce5347f9a2e5a2b48c4ebf22b8bfda9f8cc5205357631",
+      "original_class_hash": "0x4736a4f02c1f3d7ad3ce5347f9a2e5a2b48c4ebf22b8bfda9f8cc5205357631",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u32>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::FieldLayout",
+          "members": [
+            {
+              "name": "selector",
+              "type": "core::felt252"
+            },
+            {
+              "name": "layout",
+              "type": "dojo::database::introspect::Layout"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::database::introspect::FieldLayout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::database::introspect::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::database::introspect::Layout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::database::introspect::Layout>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Layout",
+          "variants": [
+            {
+              "name": "Fixed",
+              "type": "core::array::Span::<core::integer::u8>"
+            },
+            {
+              "name": "Struct",
+              "type": "core::array::Span::<dojo::database::introspect::FieldLayout>"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::database::introspect::Layout>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::database::introspect::Layout>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            },
+            {
+              "name": "Enum",
+              "type": "core::array::Span::<dojo::database::introspect::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Member",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "ty",
+              "type": "dojo::database::introspect::Ty"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::database::introspect::Member>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::database::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<dojo::database::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, dojo::database::introspect::Ty)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, dojo::database::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, dojo::database::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::database::introspect::Ty>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::database::introspect::Ty>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::database::introspect::Ty>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::database::introspect::Ty>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "version",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Layout"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "tileImpl",
+          "interface_name": "chicken_bounce::models::tile::Itile"
+        },
+        {
+          "type": "enum",
+          "name": "chicken_bounce::utils::cell::Cell",
+          "variants": [
+            {
+              "name": "StickE",
+              "type": "()"
+            },
+            {
+              "name": "StickW",
+              "type": "()"
+            },
+            {
+              "name": "Empty",
+              "type": "()"
+            },
+            {
+              "name": "ChickenIn",
+              "type": "()"
+            },
+            {
+              "name": "ChickenOut",
+              "type": "()"
+            },
+            {
+              "name": "Border",
+              "type": "()"
+            },
+            {
+              "name": "Corner",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "chicken_bounce::models::tile::Tile",
+          "members": [
+            {
+              "name": "row_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "col_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "value",
+              "type": "chicken_bounce::utils::cell::Cell"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "chicken_bounce::models::tile::Itile",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "chicken_bounce::models::tile::Tile"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "chicken_bounce::models::tile::tile::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "chicken_bounce::models::tile::tile"
     }
   ]
 }

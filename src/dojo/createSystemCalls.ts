@@ -1,93 +1,109 @@
 import { AccountInterface } from "starknet";
-import { Entity, getComponentValue } from "@dojoengine/recs";
-import { uuid } from "@latticexyz/utils";
-import { ClientComponents } from "./createClientComponents";
-import { Direction, updatePositionWithDirection } from "../utils";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { ClientComponents } from "./createClientComponents"
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
+import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent"
+import { getPlayEvents } from "../utils/playEvents";;
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
     { client }: { client: IWorld },
     _contractComponents: ContractComponents,
-    { Position, Moves }: ClientComponents
+    {  }: ClientComponents
 ) {
-    const spawn = async (account: AccountInterface) => {
+    const create_game = async (account: AccountInterface, username: string) => {
         try {
-            const { transaction_hash } = await client.actions.spawn({
-                account,
+            const { transaction_hash } = await client.actions.create_game({
+                account, username
             });
 
-            console.log(
-                await account.waitForTransaction(transaction_hash, {
-                    retryInterval: 100,
-                })
-            );
+            const tx = await account.waitForTransaction(transaction_hash, {
+                retryInterval: 100,
+              });
+        
+            if (tx.isSuccess()) {
+                const events = tx.events;
+                const gameId = getNumberValueFromEvents(events, "0", true, 0);
+                console.log("Game " + gameId + " created");
+                return gameId;
+            } else {
+                console.error("Error creating game:", tx);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        return -1;
+    };
 
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+    const play = async (account: AccountInterface, game_id: number, rowIndex: number, colIndex: number) => {
+        try {
+            const { transaction_hash } = await client.actions.play({
+                account, game_id, rowIndex, colIndex
+            });
+
+            const tx = await account.waitForTransaction(transaction_hash, {
+                retryInterval: 100,
+              });
+        
+            if (tx.isSuccess()) {
+                const events = tx.events;
+                return getPlayEvents(events);
+            } else {
+                console.error("Error creating game:", tx);
+                return {game_id: 0};
+            }
         } catch (e) {
             console.log(e);
         }
     };
 
-    const move = async (account: AccountInterface, direction: Direction) => {
-        const entityId = getEntityIdFromKeys([
-            BigInt(account.address),
-        ]) as Entity;
-
-        // const positionId = uuid();
-        // Position.addOverride(positionId, {
-        //     entity: entityId,
-        //     value: {
-        //         player: BigInt(entityId),
-        //         vec: updatePositionWithDirection(
-        //             direction,
-        //             getComponentValue(Position, entityId) as any
-        //         ).vec,
-        //     },
-        // });
-
-        // const movesId = uuid();
-        // Moves.addOverride(movesId, {
-        //     entity: entityId,
-        //     value: {
-        //         player: BigInt(entityId),
-        //         remaining:
-        //             (getComponentValue(Moves, entityId)?.remaining || 0) - 1,
-        //     },
-        // });
-
+    const create_round = async (account: AccountInterface, game_id: number) => {
         try {
-            const { transaction_hash } = await client.actions.move({
-                account,
-                direction,
+            const { transaction_hash } = await client.actions.create_round({
+                account, game_id
             });
 
-            await account.waitForTransaction(transaction_hash, {
+            const tx = await account.waitForTransaction(transaction_hash, {
                 retryInterval: 100,
-            });
-
-            // console.log(
-            //     await account.waitForTransaction(transaction_hash, {
-            //         retryInterval: 100,
-            //     })
-            // );
-
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+              });
+        
+            if (tx.isSuccess()) {
+                const events = tx.events;
+                return getPlayEvents(events);
+            } else {
+                console.error("Error creating round:", tx);
+                return {game_id: 0};
+            }
         } catch (e) {
             console.log(e);
-            // Position.removeOverride(positionId);
-            // Moves.removeOverride(movesId);
-        } finally {
-            // Position.removeOverride(positionId);
-            // Moves.removeOverride(movesId);
+        }
+    };
+
+    const end_game = async (account: AccountInterface, game_id: number) => {
+        try {
+            const { transaction_hash } = await client.actions.end_game({
+                account, game_id
+            });
+
+            const tx = await account.waitForTransaction(transaction_hash, {
+                retryInterval: 100,
+              });
+        
+            if (tx.isSuccess()) {
+                const events = tx.events;
+                return getPlayEvents(events);
+            } else {
+                console.error("Error ending game:", tx);
+                return {game_id: 0};
+            }
+        } catch (e) {
+            console.log(e);
         }
     };
 
     return {
-        spawn,
-        move,
+        create_game,
+        play,
     };
 }
