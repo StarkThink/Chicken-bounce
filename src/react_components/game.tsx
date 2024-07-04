@@ -7,6 +7,7 @@ import Modal from './modal';
 import "../App.css";
 import { BurnerAccount } from '@dojoengine/create-burner';
 import gifImage from '../../public/assets/countdown.gif';
+import { getBoard } from '../dojo/utils/getBoard';
 import './components.css';
 import './components.css';
 
@@ -22,21 +23,21 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   const {
       setup: {
           systemCalls: {  },
-          clientComponents: { },
+          clientComponents: { Tile, Board},
       },
   } = useDojo();
 
 
-  const matrix: string[][] = [
-    ["blank", "blank", "blank", "blank", "target", "blank", "blank"],
-    ["blank", "empty", "stickW", "stickE", "empty", "empty", "blank"],
-    ["blank", "stickW", "stickW", "stickW", "stickE", "empty", "target"],
-    ["blank", "alien", "empty", "empty", "alien", "empty", "blank"],
-    ["player", "empty", "stickW", "empty", "stickE", "empty", "blank"],
-    ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
-    ["blank", "blank", "blank", "blank", "target", "blank", "blank"]
-  ];
-
+  // const matrix: string[][] = [
+  //   ["blank", "blank", "blank", "blank", "target", "blank", "blank"],
+  //   ["blank", "empty", "stickW", "stickE", "empty", "empty", "blank"],
+  //   ["blank", "stickW", "stickW", "stickW", "stickE", "empty", "target"],
+  //   ["blank", "alien", "empty", "empty", "alien", "empty", "blank"],
+  //   ["player", "empty", "stickW", "empty", "stickE", "empty", "blank"],
+  //   ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
+  //   ["blank", "blank", "blank", "blank", "target", "blank", "blank"]
+  // ];
+  const matrix = getBoard(gameId, Tile, Board);
   const [showModal, setShowModal] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   
@@ -105,6 +106,8 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
               <div className="board-content">
                 <BoardComponent
                   matrix={matrix}
+                  account={account}
+                  game_id={gameId}
                 />
               </div>
             </>

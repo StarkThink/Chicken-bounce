@@ -1020,8 +1020,8 @@
     {
       "kind": "DojoContract",
       "address": "0xe1250c9f856cb5a8f444aea489a79e8102982cdf52209d8a0f6e249e2dfc75",
-      "class_hash": "0x313dd380073441a7284d7029b1f95d31501c38937132d0bbed2e8c734dd3827",
-      "original_class_hash": "0x313dd380073441a7284d7029b1f95d31501c38937132d0bbed2e8c734dd3827",
+      "class_hash": "0xf24d60f544f9160995cdf540fe7760be9e59fd83d0a82076bd9f21528682dc",
+      "original_class_hash": "0xf24d60f544f9160995cdf540fe7760be9e59fd83d0a82076bd9f21528682dc",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -2865,12 +2865,12 @@
         },
         {
           "name": "value",
-          "type": "Cell",
+          "type": "felt252",
           "key": false
         }
       ],
-      "class_hash": "0x4736a4f02c1f3d7ad3ce5347f9a2e5a2b48c4ebf22b8bfda9f8cc5205357631",
-      "original_class_hash": "0x4736a4f02c1f3d7ad3ce5347f9a2e5a2b48c4ebf22b8bfda9f8cc5205357631",
+      "class_hash": "0x3ca38334df10949fbb352ccb8610b27965623637dac16ce079d97e39f1d361c",
+      "original_class_hash": "0x3ca38334df10949fbb352ccb8610b27965623637dac16ce079d97e39f1d361c",
       "abi": [
         {
           "type": "impl",
@@ -3196,40 +3196,6 @@
           "interface_name": "chicken_bounce::models::tile::Itile"
         },
         {
-          "type": "enum",
-          "name": "chicken_bounce::utils::cell::Cell",
-          "variants": [
-            {
-              "name": "StickE",
-              "type": "()"
-            },
-            {
-              "name": "StickW",
-              "type": "()"
-            },
-            {
-              "name": "Empty",
-              "type": "()"
-            },
-            {
-              "name": "ChickenIn",
-              "type": "()"
-            },
-            {
-              "name": "ChickenOut",
-              "type": "()"
-            },
-            {
-              "name": "Border",
-              "type": "()"
-            },
-            {
-              "name": "Corner",
-              "type": "()"
-            }
-          ]
-        },
-        {
           "type": "struct",
           "name": "chicken_bounce::models::tile::Tile",
           "members": [
@@ -3247,7 +3213,7 @@
             },
             {
               "name": "value",
-              "type": "chicken_bounce::utils::cell::Cell"
+              "type": "core::felt252"
             }
           ]
         },

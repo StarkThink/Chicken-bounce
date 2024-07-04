@@ -1,8 +1,9 @@
 
+import { GAME_OVER } from "../constants/dojoEventKeys";
 import { DojoEvent } from "../types/DojoEvent";
 
 export interface PlayEvents {
-    play: MultiPoints;
+    gameWin: boolean;
   }
   
   export interface MultiPoints {
@@ -11,17 +12,14 @@ export interface PlayEvents {
   }
   
 
-export const getHandEvent = (events: DojoEvent[]) => {
+export const getGameWin = (events: DojoEvent[]) => {
   
-    return {
-      multi: 1,
-      points: 0,
-    };
+    return false;
   };
 
   export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     const playEvents: PlayEvents = {
-      play: getHandEvent(events)
+      gameWin: !!events.find((event) => event.keys[0] === GAME_OVER)
     };
   
     return playEvents;

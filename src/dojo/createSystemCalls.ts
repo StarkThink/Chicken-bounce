@@ -49,13 +49,13 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
-                return getPlayEvents(events);
+                return getPlayEvents(events).gameWin;
             } else {
                 console.error("Error creating game:", tx);
-                return {game_id: 0};
+                return false;
             }
         } catch (e) {
-            console.log(e);
+            false;
         }
     };
 

@@ -7,9 +7,13 @@ import playerImageInverted from '../../public/assets/canion-inverted.png';
 import canionExplode from '../../public/assets/cannon-explode.gif';
 import canionExplodeInverted from '../../public/assets/cannon-explode-inverted.gif';
 import chickenImage from '../../public/assets/chicken.gif';
-import Chicken from '../../public/assets/chicken.gif';
+import { useDojo } from "../dojo/useDojo";
+import { BurnerAccount } from '@dojoengine/create-burner';
+
 interface BoardProps {
   matrix: string[][];
+  account: BurnerAccount,
+  game_id: number,
 }
 
 const getPlayerInitialPosition = (matrix: string[][]) => {
@@ -27,6 +31,9 @@ const getPlayerInitialPosition = (matrix: string[][]) => {
 const isSquare = (matrix: string[][], colIndex: number, rowIndex: number) => {
   const matrix_rows = matrix.length;
   const matrix_cols = matrix[0].length;
+  if (matrix[rowIndex][colIndex] === 'corner') {
+    return true;
+  }
 
   if (rowIndex == matrix_rows - 1 && colIndex == matrix_cols - 1) {
     return true;
@@ -41,7 +48,15 @@ const isSquare = (matrix: string[][], colIndex: number, rowIndex: number) => {
   return false;
 }
 
-const Board: React.FC<BoardProps> = ({ matrix }) => {
+const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
+  const {
+    setup: {
+        systemCalls: { play },
+        clientComponents: { },
+    },
+  } = useDojo();
+
+  console.log('matrix', matrix);
   const [showCannonExplode, setShowCannonExplode] = useState(false); 
   const [showChicken, setShowChicken] = useState(false); 
   const [animationInProgress, setAnimationInProgress] = useState(false);
@@ -61,6 +76,16 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   const [cellHeight, setCellHeight] = useState(0);
 
   const boardRef = useRef<HTMLDivElement>(null);
+
+  const executePlay = async(rowIndex: number, colIndex: number) => {
+    await play(account.account, game_id, rowIndex, colIndex).then((gameWin) => {
+      if (gameWin) {
+        console.log('Game win')
+      } else {
+        console.log('Game lost')
+      }
+    });
+};
 
   const updateCellDimensions = () => {
     if (boardRef.current) {
@@ -111,9 +136,10 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   }
 
   // Function to handle cell click
-  const handleCellClick = (rowIndex: number, colIndex: number) => {
+  const handleCellClick = async (rowIndex: number, colIndex: number) => {
     if (animationInProgress) return;
     if (!isValidMove(rowIndex, colIndex)) return;
+    await executePlay(rowIndex, colIndex);
     setAnimationInProgress(true);
     setShowCannonExplode(true);
     setPlayerTargetSelection([colIndex, rowIndex]);
@@ -256,7 +282,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       }
 
       const chickenSound = new Audio('../public/assets/chicken-noise.mp3');
-      if (cell === 'stickE') {
+      if (cell === 'stickW') {
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
@@ -275,7 +301,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
             target_row_sel
           );
         }
-      } else if (cell === 'stickW') {
+      } else if (cell === 'stickE') {
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           const key = `${pos_chicken_matrix.colIndex}-${pos_chicken_matrix.rowIndex}`;
           setStickVisibility((prev) => ({ ...prev, [key]: true }));
@@ -352,8 +378,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
             key={`${rowIndex}-${colIndex}`}
             className={
               (
-                
-                cell === 'blank' || cell === 'target') ? 'blank-cell' : 
+                cell === 'blank' || cell === 'corner' || cell === 'target') ? 'blank-cell' : 
                 cell === 'player' ? 'player-cell' :
               `cell ${cell === 'player' ? 'player-cell' : ''} ${cell === 'stick' ? 'stick-cell' : ''}`
             }
@@ -432,7 +457,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       {/* {isVisible && (
         <div className="info-lost">
             <div className="x-container">
-              <img src={Chicken} alt="" />
+              <img src={chickenImage} alt="" />
           </div>
           <div className='info-text-lost'>
             <p>You lost</p>

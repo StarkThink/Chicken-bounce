@@ -322,7 +322,6 @@
   grid-template-columns: repeat(7, 13%); /* 7 columns, each 13% of the container width */
   grid-template-rows: repeat(7, 13%); /* 7 rows, each 13% of the container height */
   gap: 2px;
-  /* border: 2px solid #333; */
   padding: 10px;
   width: 100%;
   height: 100%;
@@ -339,7 +338,6 @@
 }
 
 .player-cell {
-  /* border: 1px solid #ccc; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -353,8 +351,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
-  box-shadow: none;
 }
 
 .player-image {
@@ -362,8 +358,6 @@
   width: 100%; /* Ensure it fills the cell */
   object-fit: cover; /* Adjust as needed (cover, contain, etc.) */
   z-index: 2;
-  border: none;
-  box-shadow: none;
 }
 
 .chicken-image {
@@ -398,10 +392,10 @@
     width: 50%;
     border-top: 6px solid white;
     border-radius: 20%;
-    transform: rotate(40deg);
+    transform: rotate(-40deg);
   }
   
-  @keyframes hitEAnimation {
+  @keyframes hitWAnimation {
     0% {
       transform: rotate(40deg) translateX(0);
     }
@@ -422,7 +416,7 @@
     }
   }
 
-  @keyframes hitWAnimation {
+  @keyframes hitEAnimation {
     0% {
       transform: rotate(-40deg) translateX(0);
     }
@@ -455,7 +449,7 @@
     width: 50%;
     border-top: 6px solid white;
     border-radius: 20%;
-    transform: rotate(-40deg);
+    transform: rotate(40deg);
   }
   
   .blank-cell {
@@ -516,13 +510,6 @@ body {
 }
 
 .stars-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-  }
-
-.x-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -643,15 +630,6 @@ td {
     font-size: 70px;
   }
 
-.x-lost {
-    font-size: 40px;
-    animation: pulse 1s infinite alternate;
-  }
-  
-  .x.middle-lost {
-    font-size: 70px;
-  }
-
   @keyframes pulse {
     from {
       transform: scale(1);
@@ -659,6 +637,15 @@ td {
     to {
       transform: scale(1.2);
     }
+  }
+
+.x-lost {
+    font-size: 40px;
+    animation: pulse 1s infinite alternate;
+  }
+  
+  .x.middle-lost {
+    font-size: 70px;
   }
 
   @keyframes pulse2 {

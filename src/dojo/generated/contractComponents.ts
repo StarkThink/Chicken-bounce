@@ -61,12 +61,12 @@ export function defineContractComponents(world: World) {
     Tile: (() => {
       return defineComponent(
         world,
-        { row_id: RecsType.Number, col_id: RecsType.Number, game_id: RecsType.Number, value: RecsType.Number },
+        { row_id: RecsType.Number, col_id: RecsType.Number, game_id: RecsType.Number, value: RecsType.BigInt },
         {
           metadata: {
             name: "Tile",
-            types: ["u32","u32","u32","enum"],
-            customTypes: ["Cell"],
+            types: ["u32","u32","u32","felt252"],
+            customTypes: [],
           },
         }
       );
