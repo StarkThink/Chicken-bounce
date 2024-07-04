@@ -7,7 +7,7 @@ import playerImageInverted from '../../public/assets/canion-inverted.png';
 import canionExplode from '../../public/assets/cannon-explode.gif';
 import canionExplodeInverted from '../../public/assets/cannon-explode-inverted.gif';
 import chickenImage from '../../public/assets/chicken.gif';
-
+import Chicken from '../../public/assets/chicken.gif';
 interface BoardProps {
   matrix: string[][];
 }
@@ -326,12 +326,21 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       }
     }
   }
+
+  const [isVisible, setIsVisible] = useState(false);
+
   function winEffect() {
     const elements = document.querySelectorAll('.player-target-selection');
     elements.forEach(element => {
       element.classList.remove('player-target-selection');
       element.classList.add('player-target-win');
     });
+
+    setIsVisible(true);
+    // setTimeout(() => {
+    //   setIsVisible(false);
+    // }, 3000);
+
     setShowChicken(false);
   }
 
@@ -405,6 +414,31 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           </div>
         ))
       )}
+      {isVisible && (
+        <div className="info">
+          <div className="stars-container">
+              <div className="star">⭐</div>
+              <div className="star middle">🏆</div>
+              <div className="star">⭐</div>
+          </div>
+          <div className='info-text'>
+            <p>You win!</p>
+            <button className="next-round-button">
+                Next Round
+            </button>
+          </div>
+        </div>
+      )}
+      {/* {isVisible && (
+        <div className="info-lost">
+            <div className="x-container">
+              <img src={Chicken} alt="" />
+          </div>
+          <div className='info-text-lost'>
+            <p>You lost</p>
+          </div>
+        </div>
+      )} */}
     </div>
   );
 };
