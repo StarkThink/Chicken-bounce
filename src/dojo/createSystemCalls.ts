@@ -3,7 +3,8 @@ import { ClientComponents } from "./createClientComponents"
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent"
-import { getPlayEvents } from "../utils/playEvents";;
+import { getPlayEvents } from "../utils/playEvents";
+import { CREATE_GAME_EVENT } from "../constants/dojoEventKeys";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -24,7 +25,7 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
-                const gameId = getNumberValueFromEvents(events, "0", true, 0);
+                const gameId = getNumberValueFromEvents(events, CREATE_GAME_EVENT, false, 1);
                 console.log("Game " + gameId + " created");
                 return gameId;
             } else {
