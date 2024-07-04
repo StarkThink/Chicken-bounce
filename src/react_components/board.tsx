@@ -24,6 +24,23 @@ const getPlayerInitialPosition = (matrix: string[][]) => {
   return playerInitialPosition;
 }
 
+const isSquare = (matrix: string[][], colIndex: number, rowIndex: number) => {
+  const matrix_rows = matrix.length;
+  const matrix_cols = matrix[0].length;
+
+  if (rowIndex == matrix_rows - 1 && colIndex == matrix_cols - 1) {
+    return true;
+  } else if (rowIndex == 0 && colIndex == 0) {
+    return true;
+  } else if (rowIndex == matrix_rows - 1 && colIndex == 0) {
+    return true;
+  } else if (rowIndex == 0 && colIndex == matrix_cols - 1) {
+    return true;
+  } 
+
+  return false;
+}
+
 const Board: React.FC<BoardProps> = ({ matrix }) => {
   const [showCannonExplode, setShowCannonExplode] = useState(false); 
   const [showChicken, setShowChicken] = useState(false); 
@@ -39,7 +56,7 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
 
   const [chickenPositionX, setChickenPositionX] = useState(0);
   const [chickenPositionY, setChickenPositionY] = useState(0);
-  const [playerTargetSelection, setPlayerTargetSelection] = useState([0, 0]);
+  const [playerTargetSelection, setPlayerTargetSelection] = useState([-1, -1]);
   const [cellWidth, setCellWidth] = useState(0);
   const [cellHeight, setCellHeight] = useState(0);
 
@@ -56,6 +73,22 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
     }
   };
 
+  const center_chicken = () => {
+   if (is_in_the_middle_of_cell(chickenPositionX, chickenPositionY)) {
+      return { x_diff: 0, y_diff: 0 };
+   } 
+   let current_pos = get_chicken_pos(chickenPositionX, chickenPositionY);
+   let xPos = cellWidth * player_initial_col + chickenPositionX;
+   let yPos = cellHeight * player_initial_row + chickenPositionY;
+   let cell_boundaries = get_cell_boundaries(current_pos.colIndex, current_pos.rowIndex);
+
+   let x_middle_point = cell_boundaries.x1 + (cellWidth / 2);
+   let y_middle_point = cell_boundaries.y1 + (cellHeight / 2);
+   let x_diff= x_middle_point - xPos;
+   let y_diff = y_middle_point - yPos;
+   return { x_diff, y_diff };
+  };
+
   // Calculate cell width and height based on board container size
   useEffect(() => {
     updateCellDimensions(); // Initial call to set dimensions
@@ -67,10 +100,20 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
     };
   }, [boardRef]);
 
+  const isValidMove = (rowIndex: number, colIndex: number) => {
+    if (isSquare(matrix, colIndex, rowIndex)) {
+      return false;
+    }
+    if (colIndex == 0 || rowIndex == 0 || colIndex == matrix_cols - 1 || rowIndex == matrix_rows - 1) {
+      return true;
+    }
+    return false;
+  }
+
   // Function to handle cell click
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    console.log('rowIndex', rowIndex, 'colIndex', colIndex)
     if (animationInProgress) return;
+    if (!isValidMove(rowIndex, colIndex)) return;
     setAnimationInProgress(true);
     setShowCannonExplode(true);
     setPlayerTargetSelection([colIndex, rowIndex]);
@@ -81,7 +124,8 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       setChickenPositionY(0);
 
       setShowChicken(true);
-      startChickenMovement(true, isInverted ? -40 : 40, 0, !isInverted, false, 0, 0, colIndex, rowIndex); 
+      let diff = center_chicken();
+      startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex); 
     }, 1500);
 
     // Wait for 2 seconds before hiding the cannon explode
@@ -118,29 +162,36 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
   }, [matrix]);  
 
   const get_chicken_pos = (xPos: number, yPos: number) => {
-
-    let colIndex = (Math.floor(xPos / cellWidth)) + player_initial_col;
-    let rowIndex = (Math.floor(yPos / cellHeight)) + player_initial_row;
+    // We need to consider the chicken size to calculate the position
+    xPos = cellWidth * player_initial_col + xPos;
+    yPos = cellHeight * player_initial_row + yPos;
+    let colIndex = (Math.floor(xPos / cellWidth));
+    let rowIndex = (Math.floor(yPos / cellHeight));
     return { colIndex, rowIndex };
   };
 
-  const is_in_the_middle_of_cell = (xPos: number, yPos: number) => {
-    xPos = xPos >= 0 ? xPos : -xPos;
-    yPos = yPos >= 0 ? yPos: -yPos;
+  const get_cell_boundaries = (colIndex: number, rowIndex: number) => {
+    let x1 = colIndex * cellWidth;
+    let y1 = rowIndex * cellHeight;
+    let x2 = x1 + cellWidth;
+    let y2 = y1 + cellHeight;
+    return { x1, y1, x2, y2 };
+  }
 
-    let cell_width = cellWidth + cellWidth / 2;
-    let cell_height = cellHeight + cellHeight / 2;
-    if (!isInverted){
-      cell_width = cellWidth;
-      cell_height = cellHeight;
-    }
-    
-    console.log('xPos % cell_width', xPos % cell_width, 'yPos % cell_height', yPos % cell_height)
-    if (
-      (xPos % cell_width >= 0) && (xPos % cell_width <= 10) && 
-      (yPos % cell_height >= 0) && (yPos % cell_height <= 10)
-    ) {
-      console.log('in the middle')
+  const is_in_the_middle_of_cell = (xPos: number, yPos: number) => {
+    let current_pos = get_chicken_pos(xPos, yPos);
+
+    xPos = cellWidth * player_initial_col + xPos;
+    yPos = cellHeight * player_initial_row + yPos;
+
+    let cell_boundaries = get_cell_boundaries(current_pos.colIndex, current_pos.rowIndex);
+
+    let x_middle_point = isInverted ? cell_boundaries.x1 + (cellWidth / 2) : cell_boundaries.x1;
+    let y_middle_point = isInverted ? cell_boundaries.y1 + (cellHeight / 2) : cell_boundaries.y1;
+
+    let x_diff = Math.abs(xPos - x_middle_point);
+    let y_diff = Math.abs(yPos - y_middle_point);
+    if ((x_diff <= 10) && (y_diff <= 10)) {
       return true;
     }
     return false;
@@ -162,7 +213,6 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       newPosition = newPosition + (going_up ? 10 : -10); // Calculate new position X
       let pos_x = move_on_x ? newPosition : current_x;
       let pos_y = move_on_x ? current_y : newPosition;
-      console.log('pos_x', pos_x, 'pos_y', pos_y)
       let pos_chicken_matrix = get_chicken_pos(pos_x, pos_y);
 
       // Stop moving chicken if it reaches the end of the board
@@ -172,10 +222,12 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
         pos_chicken_matrix.rowIndex < 0 ||
         pos_chicken_matrix.colIndex < 0
       ) {
+        console.log('reached the end of the board')
         clearInterval(interval);
         setAnimationInProgress(false);
         return;
       }
+
       let cell = matrix[pos_chicken_matrix.rowIndex][pos_chicken_matrix.colIndex];
       if (cell === 'blank' || cell == 'target'){
         if (
@@ -183,8 +235,10 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           target_col_sel === pos_chicken_matrix.colIndex && 
           target_row_sel === pos_chicken_matrix.rowIndex
         ) {
+          console.log('win')
           winEffect();
         }
+        console.log('reached target')
         clearInterval(interval);
         setAnimationInProgress(false);
         return;
@@ -202,7 +256,6 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
       }
 
       const chickenSound = new Audio('../public/assets/chicken-noise.mp3');
-      console.log('cell', cell)
       if (cell === 'stickE') {
         if (!hit_stick && is_in_the_middle_of_cell(pos_x, pos_y)){
           clearInterval(interval); // Stop moving chicken if it hits a stick or after reaching 300px
@@ -289,8 +342,12 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
           <div
             key={`${rowIndex}-${colIndex}`}
             className={
-              (cell === 'blank' || cell === 'target') ? 'blank-cell' : cell === 'player' ? 'player-cell' :
-              `cell ${cell === 'player' ? 'player-cell' : ''} ${cell === 'stick' ? 'stick-cell' : ''}`}
+              (
+                
+                cell === 'blank' || cell === 'target') ? 'blank-cell' : 
+                cell === 'player' ? 'player-cell' :
+              `cell ${cell === 'player' ? 'player-cell' : ''} ${cell === 'stick' ? 'stick-cell' : ''}`
+            }
             onClick={() => handleCellClick(rowIndex, colIndex)}
           >
             {(playerTargetSelection[0] === colIndex && playerTargetSelection[1] === rowIndex) && (
@@ -336,9 +393,15 @@ const Board: React.FC<BoardProps> = ({ matrix }) => {
             {cell === 'stickW' && stickVisibility[`${colIndex}-${rowIndex}`] && (
               <div className="stick-w-line hit" data-key={`${colIndex}-${rowIndex}`}></div>
             )}
-            {((cell === 'blank' || cell === 'target') && !(playerTargetSelection[0] === colIndex && playerTargetSelection[1] === rowIndex)) && (
+            {
+            (
+              !isSquare(matrix, colIndex, rowIndex) &&
+              (cell === 'blank' || cell === 'target') && 
+              !(playerTargetSelection[0] === colIndex && playerTargetSelection[1] === rowIndex)) && 
+              (
               <div className="blank-cell-content" data-key={`${colIndex}-${rowIndex}`}></div>
-            )}
+              )
+            }
           </div>
         ))
       )}

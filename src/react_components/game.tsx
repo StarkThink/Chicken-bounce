@@ -29,12 +29,12 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
 
   const matrix: string[][] = [
     ["blank", "blank", "blank", "blank", "target", "blank", "blank"],
-    ["blank", "stickW", "stickE", "empty", "empty", "empty", "blank"],
-    ["blank", "stickW", "stickE", "empty", "alien", "empty", "target"],
+    ["blank", "empty", "stickW", "stickE", "empty", "empty", "blank"],
+    ["blank", "stickW", "stickW", "stickW", "stickE", "empty", "target"],
     ["blank", "alien", "empty", "empty", "alien", "empty", "blank"],
-    ["blank", "stickW", "empty", "empty", "stickE", "empty", "player"],
+    ["player", "empty", "stickW", "empty", "stickE", "empty", "blank"],
     ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
-    ["blank", "blank", "blank", "blank", "blank", "blank", "blank"]
+    ["blank", "blank", "blank", "blank", "target", "blank", "blank"]
   ];
 
   const [showModal, setShowModal] = useState(false);
