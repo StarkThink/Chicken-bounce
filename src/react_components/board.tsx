@@ -149,7 +149,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
 
         setShowChicken(true);
         let diff = center_chicken();
-        startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex, result); 
+        startChickenMovement(true, diff.x_diff, diff.y_diff, !isInverted, false, 0, 0, colIndex, rowIndex, result!); 
       }, 1500);
 
       // Wait for 2 seconds before hiding the cannon explode
@@ -160,7 +160,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
   };
 
   useEffect(() => {
-    const stickKeys = matrix.flatMap((row, rowIndex) =>
+    const stickKeys = matrix.flatMap((row, rowIndex) => 
       row.map((cell, colIndex) => {
         if (cell === 'stickE' || cell === 'stickW') {
           return `${colIndex}-${rowIndex}`;

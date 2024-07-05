@@ -1,10 +1,10 @@
 import { DojoEvent } from "../types/DojoEvent";
 import { CreateRoundEvents, GameEvent } from "../types/CreateRoundEvents";
 import { getNumberValueFromEvents } from "./getNumberValueFromEvent";
-import { MOVE_EVENT, GAME_WIN, GAME_OVER } from "../constants/dojoEventKeys";
+import { GAME_WIN, GAME_OVER } from "../constants/dojoEventKeys";
 
 export const getGameEvent = (events: DojoEvent[]): GameEvent => {
-    // This event should be triggered from the move function in the contract
+    // This event should be triggered from the play function in the contract
     const round = getNumberValueFromEvents(events, GAME_WIN, true, 0);
     const score = getNumberValueFromEvents(events, GAME_WIN, true, 1);
 
