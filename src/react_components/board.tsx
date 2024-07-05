@@ -49,7 +49,7 @@ const isSquare = (matrix: string[][], colIndex: number, rowIndex: number) => {
   return false;
 }
 
-const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
+const Board: React.FC<BoardProps> = ({ matrix, account, game_id, onValueChange }) => {
   const {
     setup: {
         systemCalls: { play },
@@ -182,7 +182,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
         newVisibility[key as string] = false;
       });
       setStickVisibility(newVisibility);
-    }, 1000);
+    }, 3000);
   
     return () => clearTimeout(timer);
   }, [matrix]);  
@@ -373,8 +373,9 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
     // setTimeout(() => {
     //   setIsVisible(false);
     // }, 3000);
-
+    onValueChange(false, true);
     setShowChicken(false);
+
   }
 
   return (
@@ -455,9 +456,6 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
           </div>
           <div className='info-text'>
             <p>You win!</p>
-            <button className="next-round-button">
-                Next Round
-            </button>
           </div>
         </div>
       )}

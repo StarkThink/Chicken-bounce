@@ -38,7 +38,6 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   //   ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
   //   ["blank", "blank", "blank", "blank", "target", "blank", "blank"]
   // ];
-  console.log("\n\nGAME ID: ", gameId)
   const game = getGame(gameId, Game) ?? { player_name: 'Unknown Player', round: 1, score: 0 };
   const matrix = getBoard(gameId, Tile, Board);
   const [showModal, setShowModal] = useState(false);
@@ -124,11 +123,11 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
       <Modal show={showModal} handleClose={handleModalToggle}>
         <h2>How to Play</h2>
         <p>
-          Your goal is to collect all missing characters and bring them to their corresponding planet. Make sure
-          not to run out of gas!
+          Your goal is to save the chicken. Guess the hole where the chicken comes out and win!
+          See the sticks before they disappear to guess the correct path. Be quick!
         </p>
         <p>
-          To play just click on the board to move your spaceship. The spaceship will move to the clicked cell.
+          To play, just click on the hole that you think the chicken will bounce :)
         </p>
       </Modal>
     </div>
