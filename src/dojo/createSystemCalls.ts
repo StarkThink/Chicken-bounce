@@ -73,6 +73,7 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
+                console.log("PPPP", events);
                 const score = getNumberValueFromEvents(events, GAME_EVENT, true, 0);
                 const round = getNumberValueFromEvents(events, GAME_EVENT, true, 1);
                 return {score: score, round: round};

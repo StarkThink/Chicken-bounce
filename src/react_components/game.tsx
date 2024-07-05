@@ -58,9 +58,10 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   const handleBoardValueChange = async (gameActive: boolean, gameWin: boolean) => {
     if (gameWin) {
       // Assuming create_round is an async function or a function that returns a promise
-      await create_round(account.account as Account, gameId);
-      console.log('game wing')
-      await sleep(2000);
+      console.log('game id is ', gameId)
+      await create_round(account.account, gameId);
+      console.log('game win')
+      await sleep(3000);
       setShowRound(true);
     } else {
       console.log('game lost')
