@@ -54,7 +54,7 @@ export async function setupWorld(provider: DojoProvider) {
             try {
                 return await provider.execute(account, {
                     contractName: "game_system",
-                    entrypoint: "play",
+                    entrypoint: "create_round",
                     calldata: [game_id]
                 });
             } catch (error) {
@@ -67,7 +67,7 @@ export async function setupWorld(provider: DojoProvider) {
             try {
                 return await provider.execute(account, {
                     contractName: "game_system",
-                    entrypoint: "play",
+                    entrypoint: "end_game",
                     calldata: [game_id]
                 });
             } catch (error) {
