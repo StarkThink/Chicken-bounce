@@ -5,6 +5,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { GAME_ID } from "./constants/localStorage";
 import { useDojo } from "./dojo/useDojo";
 import Game  from "./react_components/game";
+import { Account, AccountInterface } from "starknet";
 
 const App: React.FC = () => {
     const {
@@ -15,13 +16,16 @@ const App: React.FC = () => {
         account,
     } = useDojo();
     const [startGame, setStartGame] = useState(false);
-    const [gameId, setGameId] = useState(0);
+    const [gameId, setGameId] = useState<number>(
+        Number(localStorage.getItem(GAME_ID)) ?? 0
+      );
 
     const [playerName, setPlayerName] = useState('');
     const [error, setError] = useState(false);
 
     const executeCreateGame = (username: string) => {
-        create_game(account.account, username).then((newGameId) => {
+        create_game(account.account as Account, username).then((newGameId) => {
+            console.log("NEW GAME ID: ", newGameId)
           if (newGameId) {
             setGameId(newGameId);
             localStorage.setItem(GAME_ID, newGameId.toString());

@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Account } from "starknet";
 import { ClientComponents } from "./createClientComponents"
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
@@ -13,7 +13,7 @@ export function createSystemCalls(
     _contractComponents: ContractComponents,
     {  }: ClientComponents
 ) {
-    const create_game = async (account: AccountInterface, username: string) => {
+    const create_game = async (account: Account, username: string) => {
         try {
             const { transaction_hash } = await client.actions.create_game({
                 account, username
@@ -37,7 +37,7 @@ export function createSystemCalls(
         return -1;
     };
 
-    const play = async (account: AccountInterface, game_id: number, rowIndex: number, colIndex: number) => {
+    const play = async (account: Account, game_id: number, rowIndex: number, colIndex: number) => {
         try {
             const { transaction_hash } = await client.actions.play({
                 account, game_id, rowIndex, colIndex
@@ -61,7 +61,7 @@ export function createSystemCalls(
         }
     };
 
-    const create_round = async (account: AccountInterface, game_id: number) => {
+    const create_round = async (account: Account, game_id: number) => {
         try {
             const { transaction_hash } = await client.actions.create_round({
                 account, game_id
@@ -86,7 +86,7 @@ export function createSystemCalls(
         }
     };
 
-    const end_game = async (account: AccountInterface, game_id: number) => {
+    const end_game = async (account: Account, game_id: number) => {
         try {
             const { transaction_hash } = await client.actions.end_game({
                 account, game_id
@@ -111,6 +111,7 @@ export function createSystemCalls(
     return {
         create_game,
         play,
-        create_round
+        create_round,
+        end_game
     };
 }
