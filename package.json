@@ -8,9 +8,10 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0x6f86fd6ee34b5cfcedb3c9410e87fe1e2116f44d6889a659844b26fe065de29"
+    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts https://starknet-sepolia.public.blastapi.io/rpc/v0_6 0x6f86fd6ee34b5cfcedb3c9410e87fe1e2116f44d6889a659844b26fe065de29"
   },
   "dependencies": {
+    "@cartridge/connector": "^0.3.29",
     "@dojoengine/core": "0.7.5",
     "@dojoengine/create-burner": "0.7.5",
     "@dojoengine/react": "0.7.5",

@@ -8,11 +8,11 @@ import canionExplode from '../../public/assets/cannon-explode.gif';
 import canionExplodeInverted from '../../public/assets/cannon-explode-inverted.gif';
 import chickenImage from '../../public/assets/chicken.gif';
 import { useDojo } from "../dojo/useDojo";
-import { BurnerAccount } from '@dojoengine/create-burner';
+import { Account } from "starknet";
 
 interface BoardProps {
   matrix: string[][];
-  account: BurnerAccount,
+  account: Account,
   game_id: number,
 }
 
@@ -79,7 +79,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
   const boardRef = useRef<HTMLDivElement>(null);
 
   const executePlay = async(rowIndex: number, colIndex: number) => {
-    const game_win = await play(account.account, game_id, rowIndex, colIndex);
+    const game_win = await play(account, game_id, rowIndex, colIndex);
     return game_win;
   };
 

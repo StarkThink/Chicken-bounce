@@ -5,14 +5,13 @@ import BoardComponent from './board';
 import Leaderboard from './leaderboard';
 import Modal from './modal';
 import "../App.css";
-import { BurnerAccount } from '@dojoengine/create-burner';
 import gifImage from '../../public/assets/countdown.gif';
 import { getBoard } from '../dojo/utils/getBoard';
-import './components.css';
+import { Account } from "starknet";
 import './components.css';
 
 interface GameProps {
-  account: BurnerAccount;
+  account: Account;
   entityId: Entity;
   gameId: number;
 }

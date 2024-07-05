@@ -6,7 +6,7 @@ import { createSystemCalls } from "../createSystemCalls";
 import { defineContractComponents } from "./contractComponents";
 import { world } from "./world";
 import { setupWorld } from "./generated";
-import { Account, WeierstrassSignatureType } from "starknet";
+import { Account, WeierstrassSignatureType, RpcProvider } from "starknet";
 import { BurnerManager } from "@dojoengine/create-burner";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
@@ -39,25 +39,27 @@ export async function setup({ ...config }: DojoConfig) {
     // setup world
     const client = await setupWorld(dojoProvider);
 
+    const rpcProvider = new RpcProvider({
+        nodeUrl: config.rpcUrl,
+      });
+
     // create burner manager
     const burnerManager = new BurnerManager({
         masterAccount: new Account(
-            {
-                nodeUrl: config.rpcUrl,
-            },
+            rpcProvider,
             config.masterAddress,
             config.masterPrivateKey
         ),
         accountClassHash: config.accountClassHash,
-        rpcProvider: dojoProvider.provider,
+        rpcProvider: rpcProvider,
         feeTokenAddress: config.feeTokenAddress,
     });
 
     try {
         await burnerManager.init();
-        if (burnerManager.list().length === 0) {
-            await burnerManager.create();
-        }
+        //if (burnerManager.list().length === 0) {
+        //    await burnerManager.create();
+        //}
     } catch (e) {
         console.error(e);
     }
@@ -78,9 +80,9 @@ export async function setup({ ...config }: DojoConfig) {
             });
         },
         config,
-        dojoProvider,
+        world,
         burnerManager,
-        toriiClient,
+        rpcProvider,
         sync,
     };
 }

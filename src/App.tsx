@@ -5,6 +5,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { GAME_ID } from "./constants/localStorage";
 import { useDojo } from "./dojo/useDojo";
 import Game  from "./react_components/game";
+import Connect from "./react_components/connect";
 
 const App: React.FC = () => {
     const {
@@ -15,13 +16,16 @@ const App: React.FC = () => {
         account,
     } = useDojo();
     const [startGame, setStartGame] = useState(false);
-    const [gameId, setGameId] = useState(0);
+    const [gameId, setGameId] = useState<number>(
+        Number(localStorage.getItem(GAME_ID)) ?? 0
+      );
 
     const [playerName, setPlayerName] = useState('');
     const [error, setError] = useState(false);
+    const [showConnect, setShowConnect] = useState(account.account === undefined);
 
     const executeCreateGame = (username: string) => {
-        create_game(account.account, username).then((newGameId) => {
+        create_game(account.account, 'username').then((newGameId) => {
           if (newGameId) {
             setGameId(newGameId);
             localStorage.setItem(GAME_ID, newGameId.toString());
@@ -33,7 +37,11 @@ const App: React.FC = () => {
 
     const handlePlayClick = () => {
         if (playerName === '') {
-            console.log('Please enter a player name')
+            console.log('No player name')
+            return;
+        }
+        if (account.account === undefined) {
+            console.log('No account')
             return;
         }
         executeCreateGame(playerName);
@@ -47,7 +55,7 @@ const App: React.FC = () => {
         const entityId = getEntityIdFromKeys([
             BigInt(account?.account.address),
         ]) as Entity;
-        return <Game account={account} gameId={gameId} entityId={entityId} />;
+        return <Game account={account.account} gameId={gameId} entityId={entityId} />;
     }
 
     return (
@@ -66,6 +74,7 @@ const App: React.FC = () => {
                         />
                     </div>
                 </div>
+                {showConnect ? <Connect /> : null}
                 <div className="centered-button">
                     <button onClick={handlePlayClick} className="pixel-art-button">Start</button>
                 </div>
