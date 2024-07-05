@@ -8,8 +8,9 @@ import "../App.css";
 import { BurnerAccount } from '@dojoengine/create-burner';
 import gifImage from '../../public/assets/countdown.gif';
 import { getBoard } from '../dojo/utils/getBoard';
+import { getGame } from '../dojo/utils/getGame';
 import './components.css';
-import './components.css';
+import { decodeString } from '../dojo/utils/decodeString';
 
 interface GameProps {
   account: BurnerAccount;
@@ -22,8 +23,8 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   const {
       setup: {
-          systemCalls: {  },
-          clientComponents: { Tile, Board},
+          systemCalls: { create_round, end_game },
+          clientComponents: { Tile, Board, Game },
       },
   } = useDojo();
 
@@ -37,6 +38,8 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   //   ["blank", "empty", "empty", "empty", "empty", "empty", "blank"],
   //   ["blank", "blank", "blank", "blank", "target", "blank", "blank"]
   // ];
+  console.log("\n\nGAME ID: ", gameId)
+  const game = getGame(gameId, Game) ?? { player_name: 'Unknown Player', round: 1, score: 0 };
   const matrix = getBoard(gameId, Tile, Board);
   const [showModal, setShowModal] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
@@ -48,13 +51,16 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
   };
 
   const handleEndGame = async () => {
+    await end_game(account.account, gameId);
     setGameEnded(true);
   };
 
   const handleBoardValueChange = async (gameActive: boolean, gameWin: boolean) => {
     if (gameWin) {
       // Assuming create_round is an async function or a function that returns a promise
+      await create_round(account.account, gameId);
       console.log('game wing')
+      await sleep(2000);
       setShowRound(true);
     } else {
       console.log('game lost')
@@ -80,7 +86,7 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
           {showRound ? (
             <div className="game-image-container">
               <div className="round-title">
-                Round 1
+                Round {game.round}
               </div>
               <div className="gif-container">
                 <img src={gifImage} alt="Loading animation" />
@@ -90,9 +96,9 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
             <>
               <div className="board-header">
                 <div>
-                  <p>Player: <span>Test</span></p>
-                  <p>Round: <span>1</span></p>
-                  <p>Score: <span>0</span></p>
+                  <p>Player: {decodeString(game.player_name)}</p>
+                  <p>Round: {game.round}</p>
+                  <p>Score: {game.score}</p>
                   <p className="how-to-play" onClick={handleModalToggle}>
                     How to play?
                   </p>
@@ -108,6 +114,7 @@ const Game: React.FC<GameProps> = ({ account, entityId, gameId }) => {
                   matrix={matrix}
                   account={account}
                   game_id={gameId}
+                  onValueChange={handleBoardValueChange}
                 />
               </div>
             </>

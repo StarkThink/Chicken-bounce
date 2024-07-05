@@ -15,13 +15,16 @@ const App: React.FC = () => {
         account,
     } = useDojo();
     const [startGame, setStartGame] = useState(false);
-    const [gameId, setGameId] = useState(0);
+    const [gameId, setGameId] = useState<number>(
+        Number(localStorage.getItem(GAME_ID)) ?? 0
+      );
 
     const [playerName, setPlayerName] = useState('');
     const [error, setError] = useState(false);
 
     const executeCreateGame = (username: string) => {
         create_game(account.account, username).then((newGameId) => {
+            console.log("NEW GAME ID: ", newGameId)
           if (newGameId) {
             setGameId(newGameId);
             localStorage.setItem(GAME_ID, newGameId.toString());

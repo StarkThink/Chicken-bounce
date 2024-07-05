@@ -14,6 +14,7 @@ interface BoardProps {
   matrix: string[][];
   account: BurnerAccount,
   game_id: number,
+  onValueChange: (gameActive: boolean, gameWin: boolean) => void;
 }
 
 const getPlayerInitialPosition = (matrix: string[][]) => {

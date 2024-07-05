@@ -22,15 +22,18 @@ interface EndGameProps {
     game_id: number;
 }
 
+const game_contract = "game_system";
+
 export async function setupWorld(provider: DojoProvider) {
     function actions() {
         const create_game = async ({ account, username }: { account: AccountInterface, username: string }) => {
             try {
-                return await provider.execute(account, {
-                    contractName: "game_system",
-                    entrypoint: "create_game",
-                    calldata: [shortString.encodeShortString(username)],
-                });
+                return await provider.execute(
+                    account,
+                    game_contract,
+                    "create_game",
+                    [shortString.encodeShortString(username)],
+                );
             } catch (error) {
                 console.error("Error executing create game:", error);
                 throw error;
@@ -39,11 +42,11 @@ export async function setupWorld(provider: DojoProvider) {
 
         const play = async ({ account, game_id, rowIndex, colIndex }: PlayProps) => {
             try {
-                return await provider.execute(account, {
-                    contractName: "game_system",
-                    entrypoint: "play",
-                    calldata: [game_id, rowIndex, colIndex]
-                });
+                return await provider.execute(account, 
+                    game_contract,
+                    "play",
+                    [game_id, rowIndex, colIndex]
+                );
             } catch (error) {
                 console.error("Error executing play:", error);
                 throw error;
@@ -52,11 +55,11 @@ export async function setupWorld(provider: DojoProvider) {
 
         const create_round = async ({ account, game_id}: CreateRoundProps) => {
             try {
-                return await provider.execute(account, {
-                    contractName: "game_system",
-                    entrypoint: "play",
-                    calldata: [game_id]
-                });
+                return await provider.execute(account,
+                    game_contract,
+                    "create_round",
+                    [game_id]
+                );
             } catch (error) {
                 console.error("Error executing create_round:", error);
                 throw error;
@@ -65,11 +68,11 @@ export async function setupWorld(provider: DojoProvider) {
 
         const end_game = async ({ account, game_id}: EndGameProps) => {
             try {
-                return await provider.execute(account, {
-                    contractName: "game_system",
-                    entrypoint: "play",
-                    calldata: [game_id]
-                });
+                return await provider.execute(account,
+                    game_contract,
+                    "end_game",
+                    [game_id]
+                );
             } catch (error) {
                 console.error("Error executing end_game:", error);
                 throw error;

@@ -111,6 +111,7 @@ export function createSystemCalls(
     return {
         create_game,
         play,
-        create_round
+        create_round,
+        end_game
     };
 }
