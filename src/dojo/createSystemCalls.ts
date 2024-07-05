@@ -4,7 +4,7 @@ import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent"
 import { getPlayEvents } from "../utils/playEvents";
-import { CREATE_GAME_EVENT } from "../constants/dojoEventKeys";
+import { CREATE_GAME_EVENT, GAME_EVENT } from "../constants/dojoEventKeys";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -73,13 +73,16 @@ export function createSystemCalls(
         
             if (tx.isSuccess()) {
                 const events = tx.events;
-                return getPlayEvents(events);
+                const score = getNumberValueFromEvents(events, GAME_EVENT, true, 0);
+                const round = getNumberValueFromEvents(events, GAME_EVENT, true, 1);
+                return {score: score, round: round};
             } else {
                 console.error("Error creating round:", tx);
-                return {game_id: 0};
+                return {score: 0, round: 0};
             }
         } catch (e) {
             console.log(e);
+            return {score: 0, round: 0};
         }
     };
 
@@ -108,5 +111,6 @@ export function createSystemCalls(
     return {
         create_game,
         play,
+        create_round
     };
 }
