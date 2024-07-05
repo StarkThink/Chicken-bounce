@@ -137,7 +137,7 @@ const Board: React.FC<BoardProps> = ({ matrix, account, game_id }) => {
     if (!isValidMove(rowIndex, colIndex)) return;
     executePlay(rowIndex, colIndex).then((result) => {
       // Place the rest of your code that depends on `result` here.
-      console.log('result', result);
+      result = result ? result : false;
       setAnimationInProgress(true);
       setShowCannonExplode(true);
       setPlayerTargetSelection([colIndex, rowIndex]);
