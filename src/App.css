@@ -13,7 +13,7 @@ code {
 }
   
 .pixel-art-button {
-    font-family: 'Courier New', monospace;
+    font-family: "Press Start 2P", system-ui;
     /* font-size: 4rem; */
     /* padding: 1rem 10rem; */
     border: none;
@@ -227,12 +227,14 @@ input {
 }
 
 .account-player label {
+    font-family: "Press Start 2P", system-ui;
     margin-bottom: 10px;
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .account-player input[type="text"] {
+    font-family: "Press Start 2P", system-ui;
     width: 300px;
     padding: 10px;
     border: 2px solid #ccc;

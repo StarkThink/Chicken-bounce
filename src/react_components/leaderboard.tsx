@@ -30,49 +30,111 @@ const Leaderboard = () => {
                 <div className="star">⭐</div>
               </div>
             <h1>Leaderboard</h1>
-            <table>
-                <thead>
+            <div className="table-container">
+              <table>
+                  <thead>
+                      <tr>
+                        <th className="position">Position</th>
+                        <th className="player">Player Name</th>
+                        <th className="">Score</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {leaderboard.map(([playerName, score], index) => (
                     <tr>
-                      <th className="position">Position</th>
-                      <th className="player">Player Name</th>
-                      <th className="">Score</th>
+                      <td key={index}>{index + 1}</td>
+                      <td>{playerName}</td>
+                      <td>{score}</td>
                     </tr>
-                </thead>
-                <tbody>
-                {leaderboard.map(([playerName, score], index) => (
-                  <tr>
-                    <td key={index}>{index + 1}</td>
-                    <td>{playerName}</td>
-                    <td>{score}</td>
-                  </tr>
-                  ))}
-                    {/* <tr>
-                        <td className="position">1</td>
-                        <td className="player">John Doe</td>
-                        <td className="">10000000</td>
-                    </tr>
-                    <tr>
-                        <td className="position">2</td>
-                        <td className="player">Jane Smith</td>
-                        <td className="">900</td>
-                    </tr>
-                    <tr>
-                        <td className="position">3</td>
-                        <td className="player">Bob Johnson</td>
-                        <td className="">850</td>
-                    </tr>
-                    <tr>
-                        <td className="position">3</td>
-                        <td className="player">Bob Johnson</td>
-                        <td className="">850</td>
-                    </tr>
-                    <tr>
-                        <td className="position">3</td>
-                        <td className="player">Bob Johnson</td>
-                        <td className="">850</td>
-                    </tr> */}
-                </tbody>
-            </table>
+                    ))}
+                      <tr>
+                          <td className="position">1</td>
+                          <td className="player">John Doe</td>
+                          <td className="">10000000</td>
+                      </tr>
+                      <tr>
+                          <td className="position">2</td>
+                          <td className="player">Jane Smith</td>
+                          <td className="">900</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                      <tr>
+                          <td className="position">3</td>
+                          <td className="player">Bob Johnson</td>
+                          <td className="">850</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
             <div className="button-container">
                 <button onClick={handlePlayAgain}>Play Again</button>
             </div>
