@@ -42,6 +42,7 @@ export const DojoProvider = ({
         list,
         get,
         select,
+        deselect,
         remove,
         clear,
         account,
@@ -49,7 +50,6 @@ export const DojoProvider = ({
         count,
         copyToClipboard,
         applyFromClipboard,
-        checkIsDeployed,
     } = useBurnerManager({
         burnerManager,
     });
@@ -64,6 +64,7 @@ export const DojoProvider = ({
                     list,
                     get,
                     select,
+                    deselect,
                     remove,
                     clear,
                     account: account ? account : masterAccount,
@@ -71,7 +72,6 @@ export const DojoProvider = ({
                     count,
                     copyToClipboard,
                     applyFromClipboard,
-                    checkIsDeployed,
                 },
             }}
         >
