@@ -9,7 +9,7 @@
 }
 
 .round-title {
-    font-family: var(--font-family);
+    font-family: "Press Start 2P", system-ui;
     font-weight: bold;
     font-size: 3rem;
     z-index: 10;
@@ -61,7 +61,9 @@
 }
 
 .board-header div p {
-	font-size: 24px;
+  font-family: "Press Start 2P", system-ui;
+	font-size: 15px;
+  padding: 5px;
 }
 
 .board-header div p span {
@@ -110,8 +112,8 @@
 }
 
 .end-game-button {
-    font-family: var(--font-family);
-    font-size: 1.3rem;
+    font-family: "Press Start 2P", system-ui;
+    font-size: 15px;
     font-weight: bold;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -501,6 +503,7 @@ body {
 /* Styles for the leaderboard container */
 .leaderboard {
     /* width: 100%; */
+    /* height: 600px; */
     max-width: 600px;
     background: #fff;
     border-radius: 10px;
@@ -518,8 +521,9 @@ body {
 
 /* Styles for the leaderboard title */
 .leaderboard h1 {
+    font-family: "Press Start 2P", system-ui;
     background-color: #4CAF50;
-    font-size: 33px;
+    font-size: 25px;
     margin: 0;
     padding: 15px;
     color: white;
@@ -532,7 +536,9 @@ body {
 }
 
 .leaderboard th, .leaderboard td {
-    padding: 15px;
+    font-family: "Press Start 2P", system-ui;
+    font-size: 16px;
+    padding: 20px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -572,6 +578,7 @@ body {
 }
 
 .leaderboard .button-container button {
+    font-family: "Press Start 2P", system-ui;  
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -579,11 +586,16 @@ body {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 20px;
+    font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+}
+
+.table-container {
+  max-height: 40vh;
+  overflow-y: auto;
 }
 
 .leaderboard .button-container button:hover {
@@ -592,13 +604,13 @@ body {
 
 /* Styles for the GIF container */
 .leaderboard .gif-container {
-    padding: 15px;
+    padding: 10px;
 }
 
 .leaderboard .gif-container img {
     width: 100%;
-    max-width: 300px;
-    height: auto;
+    max-width: 200px;
+    height: 200px;
     border-radius: 10px;
 }
 
